@@ -88,6 +88,12 @@
                 <button onclick="openTab('ciclo')" id="tab-btn-ciclo" class="tab-btn text-slate-500 hover:text-slate-700 hover:bg-slate-50 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors flex items-center whitespace-nowrap">
                     <i class="fa-solid fa-rotate mr-2"></i> Ciclo de Vida
                 </button>
+                <button onclick="openTab('tecnologias')" id="tab-btn-tecnologias" class="tab-btn text-slate-500 hover:text-slate-700 hover:bg-slate-50 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors flex items-center whitespace-nowrap">
+                    <i class="fa-solid fa-laptop-code mr-2"></i> Tecnologias & Normas
+                </button>
+                <button onclick="openTab('referencias')" id="tab-btn-referencias" class="tab-btn text-slate-500 hover:text-slate-700 hover:bg-slate-50 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors flex items-center whitespace-nowrap">
+                    <i class="fa-solid fa-book-bookmark mr-2"></i> Referências & Radar
+                </button>
             </nav>
         </div>
 
@@ -100,11 +106,104 @@
                 
                 <div class="prose max-w-none text-slate-600 leading-relaxed space-y-4">
                     <p>
-                        No escopo da Engenharia da Computação e dos Sistemas de Informação, é comum reduzir a segurança à configuração de firewalls ou à correção de bugs em código. Contudo, a <strong>Segurança da Informação (SI)</strong> é uma disciplina estratégica e abrangente.
+                        A <strong>Segurança da Informação (SI)</strong> compreende a proteção das informações, sistemas, recursos e demais ativos contra desastres, erros (intencionais ou não) e manipulação não autorizada, objetivando a redução da probabilidade e do impacto de incidentes de segurança.
+                    </p>
+                    <p class="text-sm bg-slate-100 p-3 rounded-lg border-l-4 border-blue-500">
+                        <em>"Todos esses controles necessitam ser estabelecidos, implementados, monitorados, analisados criticamente e melhorados para que assegure que os objetivos do negócio e a segurança da informação da organização sejam atendidos."</em><br>
+                        <span class="text-slate-500 font-semibold">— Item 0.1 ABNT NBR ISO/EIC 270002:2013</span>
                     </p>
                     <p>
-                        Ela não se limita à tecnologia, mas engloba a interação contínua entre três pilares para proteger o ativo intangível mais crítico de uma organização: a <strong>informação</strong>.
+                        A informação pode existir de muitas formas (impressa, falada, armazenada eletronicamente ou transmitida). Em todas essas formas, ela deve ser protegida adequadamente. A segurança não é um estado binário (seguro ou inseguro); <strong>não existe rede totalmente segura</strong>. Falamos em graus ("mais segurança" ou "menos segurança"), o que exige que o gerenciamento da SI seja constante.
                     </p>
+
+                    <h3 class="text-xl font-bold text-slate-800 mt-6 border-b pb-2">Por que se preocupar com segurança?</h3>
+                    <p>
+                        A falta de segurança pode resultar em destruição de recursos, modificação de dados, roubo/perda, revelação indevida e interrupção de serviços críticos.
+                    </p>
+                    
+                    <h4 class="text-lg font-bold text-slate-800 mt-6 mb-3"><i class="fa-solid fa-triangle-exclamation text-amber-500 mr-2"></i> Incidentes Históricos e seus Impactos</h4>
+                    
+                    <div class="space-y-4">
+                        <!-- Caso NSA -->
+                        <div class="bg-blue-50 border border-blue-200 rounded-xl p-5 flex flex-col md:flex-row gap-4 items-center transition-all hover:shadow-md">
+                            <div class="flex-shrink-0 text-slate-700 text-4xl w-12 text-center">
+                                <i class="fa-solid fa-user-secret"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-800">O Caso NSA (Edward Snowden - 2013)</h4>
+                                <p class="text-sm text-slate-600 mt-1 mb-2">
+                                    Vazamento de documentos ultrassecretos revelando programas de vigilância em massa globais (como o PRISM) e interceptação de comunicações. <strong>Impacto:</strong> Magnitude das falhas de confidencialidade, crise diplomática e mudança global na percepção sobre privacidade e criptografia.
+                                </p>
+                                <a href="https://www.youtube.com/watch?v=dea2d6ezvsQ" target="_blank" class="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800">
+                                    <i class="fa-brands fa-youtube text-red-500 mr-2"></i> Assistir documentário sobre o caso
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Caso WannaCry -->
+                        <div class="bg-red-50 border border-red-200 rounded-xl p-5 flex flex-col md:flex-row gap-4 items-center transition-all hover:shadow-md">
+                            <div class="flex-shrink-0 text-red-600 text-4xl w-12 text-center">
+                                <i class="fa-solid fa-virus"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-800">Ransomware WannaCry (2017)</h4>
+                                <p class="text-sm text-slate-600 mt-1 mb-2">
+                                    Ataque global que explorou a vulnerabilidade EternalBlue no Windows. Criptografou dados de milhares de empresas em mais de 150 países. <strong>Impacto:</strong> Interrupção severa da <em>Disponibilidade</em>. Hospitais do NHS no Reino Unido paralisaram cirurgias, fábricas automotivas pararam e prejuízos globais ultrapassaram 4 bilhões de dólares.
+                                </p>
+                                <a href="https://globoplay.globo.com/v/5868172/" target="_blank" class="inline-flex items-center text-sm font-medium text-red-600 hover:text-red-800">
+                                    <i class="fa-solid fa-link mr-2"></i> Reportagem sobre o caso WannaCry
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Caso Mega Vazamento BR -->
+                        <div class="bg-amber-50 border border-amber-200 rounded-xl p-5 flex flex-col md:flex-row gap-4 items-center transition-all hover:shadow-md">
+                            <div class="flex-shrink-0 text-amber-500 text-4xl w-12 text-center">
+                                <i class="fa-solid fa-id-card"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-800">Mega Vazamento de Dados no Brasil (2021)</h4>
+                                <p class="text-sm text-slate-600 mt-1 mb-2">
+                                    Exposição de dados de mais de 223 milhões de brasileiros (incluindo falecidos), contendo CPF, score de crédito, renda e fotos. <strong>Impacto:</strong> Perda massiva de <em>Confidencialidade</em>, facilitando fraudes de identidade, golpes de engenharia social e expondo a necessidade urgente de adequação à LGPD.
+                                </p>
+                                <a href="https://g1.globo.com/economia/tecnologia/noticia/2021/01/28/vazamento-de-dados-de-223-milhoes-de-brasileiros-o-que-se-sabe-e-o-que-falta-saber.ghtml" target="_blank" class="inline-flex items-center text-sm font-medium text-amber-600 hover:text-amber-800">
+                                    <i class="fa-solid fa-link mr-2"></i> Entenda o que se sabe sobre o vazamento
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Caso STJ -->
+                        <div class="bg-slate-100 border border-slate-300 rounded-xl p-5 flex flex-col md:flex-row gap-4 items-center transition-all hover:shadow-md">
+                            <div class="flex-shrink-0 text-slate-600 text-4xl w-12 text-center">
+                                <i class="fa-solid fa-building-columns"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-800">Ataque Ransomware ao STJ (Nov/2020)</h4>
+                                <p class="text-sm text-slate-600 mt-1 mb-2">
+                                    O Superior Tribunal de Justiça (STJ) sofreu um ataque hacker massivo que sequestrou os dados do sistema da Corte, exigindo pagamento de resgate. <strong>Impacto:</strong> Perda crítica de <em>Disponibilidade</em>. Mais de 255 mil processos ficaram travados, sessões foram suspensas e os prazos processuais federais paralisados por dias.
+                                </p>
+                                <a href="https://g1.globo.com/politica/noticia/2020/11/04/stj-aciona-pf-para-apurar-possivel-ataque-de-hackers-ao-sistema-do-tribunal.ghtml" target="_blank" class="inline-flex items-center text-sm font-medium text-slate-600 hover:text-slate-800">
+                                    <i class="fa-solid fa-link mr-2"></i> Notícia sobre o ataque ao STJ
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Caso Lojas Renner -->
+                        <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-5 flex flex-col md:flex-row gap-4 items-center transition-all hover:shadow-md">
+                            <div class="flex-shrink-0 text-indigo-500 text-4xl w-12 text-center">
+                                <i class="fa-solid fa-cart-shopping"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-800">Sequestro do E-commerce Lojas Renner (Ago/2021)</h4>
+                                <p class="text-sm text-slate-600 mt-1 mb-2">
+                                    As Lojas Renner sofreram uma invasão por ransomware que criptografou e derrubou todo o sistema de e-commerce e aplicativo da varejista (e de sua subsidiária Camicado). <strong>Impacto:</strong> Queda brutal na <em>Disponibilidade</em> e impacto na continuidade do negócio, resultando em perdas financeiras milionárias e danos severos à operação e reputação.
+                                </p>
+                                <a href="https://g1.globo.com/economia/tecnologia/noticia/2021/08/19/site-das-lojas-renner-sai-do-ar-apos-ataque-hacker.ghtml" target="_blank" class="inline-flex items-center text-sm font-medium text-indigo-600 hover:text-indigo-800">
+                                    <i class="fa-solid fa-link mr-2"></i> Cobertura da queda dos sistemas Renner
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                     
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
                         <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 text-center">
@@ -182,62 +281,74 @@
 
             <!-- TAB 3: Tríade CIA -->
             <div id="triade" class="tab-content">
-                <h2 class="text-2xl font-bold text-slate-800 mb-2 border-b pb-2">Os Princípios Fundamentais (Tríade CIA)</h2>
-                <p class="text-slate-600 mb-6 text-sm">A arquitetura de segurança de qualquer sistema é avaliada com base em pilares clássicos. Passe o mouse ou clique sobre os cards para mais detalhes.</p>
+                <h2 class="text-2xl font-bold text-slate-800 mb-2 border-b pb-2">Propriedades Básicas (A Tríade CID/CIA)</h2>
+                <p class="text-slate-600 mb-6 text-sm">A arquitetura de segurança de qualquer sistema é avaliada com base nos pilares da Tríade CID (Confidencialidade, Integridade e Disponibilidade). Passe o mouse ou clique sobre os cards para mais detalhes.</p>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                     <!-- Confidencialidade -->
-                    <div class="cia-card bg-white rounded-xl p-6 border-t-4 border-t-blue-500 shadow-sm border border-slate-200 relative overflow-hidden">
+                    <div class="cia-card bg-white rounded-xl p-6 border-t-4 border-t-blue-500 shadow-sm border border-slate-200 relative overflow-hidden flex flex-col h-full">
                         <div class="absolute -right-4 -top-4 opacity-10">
                             <i class="fa-solid fa-lock text-9xl text-blue-500"></i>
                         </div>
                         <h3 class="text-xl font-bold text-slate-800 mb-2 flex items-center">
                             <i class="fa-solid fa-lock text-blue-500 mr-2"></i> Confidencialidade
                         </h3>
-                        <p class="text-sm text-slate-600 mb-4">A garantia de que o dado não será exposto a entidades não autorizadas.</p>
-                        <div class="bg-blue-50 p-3 rounded text-xs text-blue-800 border border-blue-100">
-                            <strong>Controles Técnicos:</strong> Criptografia de dados em repouso (AES-256), controle de acesso (RBAC) e túneis VPN.
+                        <p class="text-sm text-slate-600 mb-4 flex-grow">Compreende a proteção de dados transmitidos contra ataques passivos (acessos não autorizados). A perda ocorre quando há quebra de sigilo, expondo informações restritas a quem não deveria vê-las.</p>
+                        <div class="bg-blue-50 p-3 rounded text-xs text-blue-800 border border-blue-100 mt-auto">
+                            <strong>Exemplos:</strong> Controle de acesso restrito e Criptografia.
                         </div>
                     </div>
 
                     <!-- Integridade -->
-                    <div class="cia-card bg-white rounded-xl p-6 border-t-4 border-t-emerald-500 shadow-sm border border-slate-200 relative overflow-hidden">
+                    <div class="cia-card bg-white rounded-xl p-6 border-t-4 border-t-emerald-500 shadow-sm border border-slate-200 relative overflow-hidden flex flex-col h-full">
                         <div class="absolute -right-4 -top-4 opacity-10">
                             <i class="fa-solid fa-file-shield text-9xl text-emerald-500"></i>
                         </div>
                         <h3 class="text-xl font-bold text-slate-800 mb-2 flex items-center">
                             <i class="fa-solid fa-file-shield text-emerald-500 mr-2"></i> Integridade
                         </h3>
-                        <p class="text-sm text-slate-600 mb-4">A salvaguarda da exatidão e completude da informação, impedindo alterações indevidas.</p>
-                        <div class="bg-emerald-50 p-3 rounded text-xs text-emerald-800 border border-emerald-100">
-                            <strong>Controles Técnicos:</strong> Funções de resumo criptográfico (Hashes como SHA-256), Códigos MAC e logs de auditoria.
+                        <p class="text-sm text-slate-600 mb-4 flex-grow">Garantia contra ataques ativos por meio de alterações ou remoções não autorizadas. A perda da integridade surge quando dados são manipulados sem aprovação e controle de seu proprietário.</p>
+                        <div class="bg-emerald-50 p-3 rounded text-xs text-emerald-800 border border-emerald-100 mt-auto">
+                            <strong>Exemplos:</strong> Uso de esquemas de verificação (Hashes) para dados armazenados e em transmissão.
                         </div>
                     </div>
 
                     <!-- Disponibilidade -->
-                    <div class="cia-card bg-white rounded-xl p-6 border-t-4 border-t-amber-500 shadow-sm border border-slate-200 relative overflow-hidden">
+                    <div class="cia-card bg-white rounded-xl p-6 border-t-4 border-t-amber-500 shadow-sm border border-slate-200 relative overflow-hidden flex flex-col h-full">
                         <div class="absolute -right-4 -top-4 opacity-10">
                             <i class="fa-solid fa-server text-9xl text-amber-500"></i>
                         </div>
                         <h3 class="text-xl font-bold text-slate-800 mb-2 flex items-center">
                             <i class="fa-solid fa-server text-amber-500 mr-2"></i> Disponibilidade
                         </h3>
-                        <p class="text-sm text-slate-600 mb-4">A garantia de que os sistemas e dados estarão acessíveis aos usuários legítimos.</p>
-                        <div class="bg-amber-50 p-3 rounded text-xs text-amber-800 border border-amber-100">
-                            <strong>Controles Técnicos:</strong> Balanceamento de carga, redundância (multi-AZ), backups e mitigação Anti-DDoS.
+                        <p class="text-sm text-slate-600 mb-4 flex-grow">Determina que recursos estejam disponíveis para acesso por entidades autorizadas, sempre que solicitados. A perda acontece quando a informação ou sistema deixa de estar acessível.</p>
+                        <div class="bg-amber-50 p-3 rounded text-xs text-amber-800 border border-amber-100 mt-auto">
+                            <strong>Exemplos:</strong> Proteção contra falhas em aplicações, quedas de servidores e ataques de negação de serviço.
                         </div>
                     </div>
                 </div>
 
-                <h4 class="font-bold text-slate-700 mb-3"><i class="fa-solid fa-plus-circle text-indigo-500"></i> Princípios Complementares Críticos</h4>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <h4 class="font-bold text-slate-700 mb-3"><i class="fa-solid fa-plus-circle text-indigo-500"></i> Princípios Adicionais</h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                     <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
-                        <strong class="text-slate-800 block mb-1">Autenticidade</strong>
-                        <span class="text-sm text-slate-600">A verificação rigorosa da identidade de um usuário, processo ou dispositivo (ex: MFA, certificados X.509).</span>
+                        <strong class="text-slate-800 block mb-1">Não-repúdio</strong>
+                        <span class="text-sm text-slate-600">Provar que uma ação ocorreu, impedindo que o autor negue sua autoria.</span>
                     </div>
                     <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
-                        <strong class="text-slate-800 block mb-1">Não Repúdio (Irretratabilidade)</strong>
-                        <span class="text-sm text-slate-600">Provar que uma ação ocorreu, impedindo que o autor negue sua autoria. Essencial em transações (ex: Assinatura Digital RSA/OpenPGP).</span>
+                        <strong class="text-slate-800 block mb-1">Autenticação</strong>
+                        <span class="text-sm text-slate-600">O processo de verificar e confirmar a identidade reivindicada por uma entidade.</span>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                        <strong class="text-slate-800 block mb-1">Autenticidade</strong>
+                        <span class="text-sm text-slate-600">A garantia de que o dado ou a comunicação é genuína e vem de fontes confiáveis.</span>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                        <strong class="text-slate-800 block mb-1">Autorização</strong>
+                        <span class="text-sm text-slate-600">A concessão de direitos e privilégios específicos de acesso a recursos após a autenticação.</span>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                        <strong class="text-slate-800 block mb-1">Legalidade</strong>
+                        <span class="text-sm text-slate-600">Garantir que as políticas e sistemas estejam em conformidade com as legislações vigentes.</span>
                     </div>
                 </div>
             </div>
@@ -290,6 +401,160 @@
                                     <li>Aplicação de políticas da ISO 27001 para tratamento de ativos.</li>
                                 </ul>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 5: Tecnologias & Normas -->
+            <div id="tecnologias" class="tab-content">
+                <h2 class="text-2xl font-bold text-slate-800 mb-2 border-b pb-2">Tecnologias, Normas e Frameworks</h2>
+                <p class="text-slate-600 mb-6 text-sm">Ao longo do semestre, traduziremos os conceitos de segurança em aplicações práticas e nos guiaremos pelas principais normas e frameworks de mercado.</p>
+
+                <h3 class="text-xl font-bold text-slate-700 mb-4 mt-2"><i class="fa-solid fa-book-bookmark text-indigo-500 mr-2"></i> Normas e Frameworks de Governança</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <!-- ISO 27000 -->
+                    <div class="border border-slate-200 rounded-xl overflow-hidden hover:shadow-md transition-shadow">
+                        <div class="bg-slate-800 px-5 py-3 flex items-center">
+                            <i class="fa-solid fa-file-contract text-white mr-3 text-xl"></i>
+                            <h3 class="font-bold text-white">Família ISO/IEC 27000</h3>
+                        </div>
+                        <div class="p-5 bg-white text-slate-600 text-sm h-full">
+                            <p class="mb-2"><strong>Foco:</strong> Gestão e Governança de Segurança.</p>
+                            <p>Conjunto de normas internacionais. Focaremos na <strong>ISO 27001</strong> (requisitos para estabelecer um SGSI - Sistema de Gestão de Segurança da Informação) e <strong>ISO 27002</strong> (guia de boas práticas e controles de segurança corporativa).</p>
+                        </div>
+                    </div>
+
+                    <!-- NIST CSF -->
+                    <div class="border border-slate-200 rounded-xl overflow-hidden hover:shadow-md transition-shadow">
+                        <div class="bg-blue-800 px-5 py-3 flex items-center">
+                            <i class="fa-solid fa-shield-cat text-white mr-3 text-xl"></i>
+                            <h3 class="font-bold text-white">NIST Cybersecurity Framework</h3>
+                        </div>
+                        <div class="p-5 bg-white text-slate-600 text-sm h-full">
+                            <p class="mb-2"><strong>Foco:</strong> Redução de Riscos Cibernéticos.</p>
+                            <p>Desenvolvido pelo governo dos EUA, organiza a cibersegurança em 5 funções essenciais: <strong>Identificar, Proteger, Detectar, Responder e Recuperar</strong>. É um dos frameworks mais adotados globalmente para estruturar defesas.</p>
+                        </div>
+                    </div>
+
+                    <!-- CIS Controls -->
+                    <div class="border border-slate-200 rounded-xl overflow-hidden hover:shadow-md transition-shadow">
+                        <div class="bg-teal-700 px-5 py-3 flex items-center">
+                            <i class="fa-solid fa-list-check text-white mr-3 text-xl"></i>
+                            <h3 class="font-bold text-white">CIS Controls & MITRE ATT&CK</h3>
+                        </div>
+                        <div class="p-5 bg-white text-slate-600 text-sm h-full">
+                            <p class="mb-2"><strong>Foco:</strong> Defesa Prática e Análise de Ameaças.</p>
+                            <p>Os <strong>CIS Controls</strong> oferecem um conjunto priorizado de ações para mitigação de ataques. O <strong>MITRE ATT&CK</strong> é uma base de conhecimento global sobre táticas e técnicas utilizadas por adversários em ataques reais.</p>
+                        </div>
+                    </div>
+
+                    <!-- LGPD -->
+                    <div class="border border-slate-200 rounded-xl overflow-hidden hover:shadow-md transition-shadow">
+                        <div class="bg-emerald-700 px-5 py-3 flex items-center">
+                            <i class="fa-solid fa-scale-balanced text-white mr-3 text-xl"></i>
+                            <h3 class="font-bold text-white">LGPD & GDPR</h3>
+                        </div>
+                        <div class="p-5 bg-white text-slate-600 text-sm h-full">
+                            <p class="mb-2"><strong>Foco:</strong> Privacidade e Conformidade Legal.</p>
+                            <p>A Lei Geral de Proteção de Dados (Brasil) e o GDPR (Europa) não são apenas tecnologias, mas frameworks legais impositivos que definem como os dados pessoais devem ser tratados, exigindo controles rigorosos de privacidade (*Privacy by Design*).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="text-xl font-bold text-slate-700 mb-4"><i class="fa-solid fa-screwdriver-wrench text-rose-500 mr-2"></i> Tecnologias de Laboratório</h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- OWASP -->
+                    <div class="border border-slate-200 rounded-xl overflow-hidden hover:shadow-md transition-shadow">
+                        <div class="bg-blue-600 px-5 py-3 flex items-center">
+                            <i class="fa-solid fa-bug text-white mr-3 text-xl"></i>
+                            <h3 class="font-bold text-white">OWASP (Top 10)</h3>
+                        </div>
+                        <div class="p-5 bg-white text-slate-600 text-sm">
+                            <p class="mb-2"><strong>Foco:</strong> Segurança de Aplicações Web.</p>
+                            <p>O <em>Open Worldwide Application Security Project</em> é a principal referência em segurança de software. Utilizaremos o documento <strong>OWASP Top 10</strong> para identificar, explorar em laboratório e mitigar as vulnerabilidades mais críticas (Injeções, XSS, Falhas de Autenticação).</p>
+                        </div>
+                    </div>
+
+                    <!-- Redes (iptables e Snort) -->
+                    <div class="border border-slate-200 rounded-xl overflow-hidden hover:shadow-md transition-shadow">
+                        <div class="bg-rose-600 px-5 py-3 flex items-center">
+                            <i class="fa-solid fa-network-wired text-white mr-3 text-xl"></i>
+                            <h3 class="font-bold text-white">Iptables & Snort</h3>
+                        </div>
+                        <div class="p-5 bg-white text-slate-600 text-sm">
+                            <p class="mb-2"><strong>Foco:</strong> Defesa de Perímetro e Redes.</p>
+                            <p>Ferramentas essenciais para proteção de infraestrutura. O <strong>iptables</strong> será utilizado para criar regras de firewall (filtragem de pacotes Linux), enquanto o <strong>Snort</strong> funcionará como nosso Sistema de Detecção de Intrusão (IDS) para análise de tráfego e assinaturas de ataques maliciosos.</p>
+                        </div>
+                    </div>
+
+                    <!-- Criptografia -->
+                    <div class="border border-slate-200 rounded-xl overflow-hidden hover:shadow-md transition-shadow">
+                        <div class="bg-emerald-600 px-5 py-3 flex items-center">
+                            <i class="fa-solid fa-key text-white mr-3 text-xl"></i>
+                            <h3 class="font-bold text-white">Certificados X.509 & OpenPGP</h3>
+                        </div>
+                        <div class="p-5 bg-white text-slate-600 text-sm">
+                            <p class="mb-2"><strong>Foco:</strong> Criptografia e Identidade Digital.</p>
+                            <p>Práticas de criptografia aplicadas. Abordaremos o padrão <strong>X.509</strong>, fundamental para a Infraestrutura de Chaves Públicas (PKI) e conexões HTTPS/TLS, além do <strong>OpenPGP</strong> para criptografia, assinatura e teia de confiança (Web of Trust) em e-mails e arquivos.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 6: Referências & Radar -->
+            <div id="referencias" class="tab-content">
+                <h2 class="text-2xl font-bold text-slate-800 mb-2 border-b pb-2">Bibliografia e Radar de Incidentes</h2>
+                <p class="text-slate-600 mb-8 text-sm">Consulte as principais obras de referência da disciplina e acompanhe as notícias e trackers em tempo real sobre incidentes de cibersegurança.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Bibliografia -->
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-700 mb-4 flex items-center">
+                            <i class="fa-solid fa-book text-indigo-500 mr-2"></i> Bibliografia Recomendada
+                        </h3>
+                        <ul class="space-y-4">
+                            <li class="bg-slate-50 p-5 rounded-xl border border-slate-200 shadow-sm transition hover:shadow-md">
+                                <strong class="text-slate-800 block mb-1">STALLINGS, William.</strong>
+                                <span class="text-sm text-slate-600">Criptografia e segurança de redes: princípios e práticas. 6ª ed. São Paulo: Pearson. <br><em class="text-xs text-slate-500 mt-1 block">O livro-texto definitivo e mais cobrado mundialmente sobre os fundamentos matemáticos e a aplicação da criptografia.</em></span>
+                            </li>
+                            <li class="bg-slate-50 p-5 rounded-xl border border-slate-200 shadow-sm transition hover:shadow-md">
+                                <strong class="text-slate-800 block mb-1">NAKAMURA, Emilio Tissato; GEUS, Paulo Lício de.</strong>
+                                <span class="text-sm text-slate-600">Segurança de redes em ambientes cooperativos. São Paulo: Novatec.<br><em class="text-xs text-slate-500 mt-1 block">Excelente referência nacional para entender infraestrutura, firewalls e defesas perimetrais.</em></span>
+                            </li>
+                            <li class="bg-slate-50 p-5 rounded-xl border border-slate-200 shadow-sm transition hover:shadow-md">
+                                <strong class="text-slate-800 block mb-1">ABNT NBR ISO/IEC 27001 e 27002</strong>
+                                <span class="text-sm text-slate-600">Tecnologia da informação - Técnicas de segurança - Sistemas de gestão da segurança da informação.<br><em class="text-xs text-slate-500 mt-1 block">A base normativa global para planejamento e auditoria de segurança da informação (Compliance).</em></span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Radar de Incidentes -->
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-700 mb-4 flex items-center">
+                            <i class="fa-solid fa-satellite-dish text-rose-500 mr-2"></i> Radar: Notícias e Trackers
+                        </h3>
+                        <p class="text-sm text-slate-600 mb-4">Acompanhe as últimas ameaças, vazamentos, ataques cibernéticos e vulnerabilidades atualizadas diariamente:</p>
+                        
+                        <div class="space-y-3">
+                            <a href="https://boletimsec.com/" target="_blank" class="flex flex-col bg-white border border-slate-200 p-4 rounded-xl hover:border-blue-400 hover:shadow-md transition-all group">
+                                <strong class="text-blue-700 group-hover:text-blue-800 flex items-center text-sm mb-1"><i class="fa-solid fa-arrow-up-right-from-square mr-2 text-xs"></i> BoletimSec (Brasil)</strong>
+                                <span class="text-xs text-slate-500">Notícias e boletins totalmente focados no mercado brasileiro e casos práticos de cibersegurança.</span>
+                            </a>
+                            <a href="https://thehackernews.com/" target="_blank" class="flex flex-col bg-white border border-slate-200 p-4 rounded-xl hover:border-blue-400 hover:shadow-md transition-all group">
+                                <strong class="text-blue-700 group-hover:text-blue-800 flex items-center text-sm mb-1"><i class="fa-solid fa-arrow-up-right-from-square mr-2 text-xs"></i> The Hacker News</strong>
+                                <span class="text-xs text-slate-500">Uma das publicações globais mais respeitadas por especialistas sobre vulnerabilidades, malwares e ataques.</span>
+                            </a>
+                            <a href="https://eurepoc.eu/" target="_blank" class="flex flex-col bg-white border border-slate-200 p-4 rounded-xl hover:border-blue-400 hover:shadow-md transition-all group">
+                                <strong class="text-blue-700 group-hover:text-blue-800 flex items-center text-sm mb-1"><i class="fa-solid fa-arrow-up-right-from-square mr-2 text-xs"></i> EuRepoC (Incident Tracker)</strong>
+                                <span class="text-xs text-slate-500">Repositório Europeu de Incidentes Cibernéticos. Excelente Tracker visual para pesquisar ataques massivos a infraestruturas críticas no mundo.</span>
+                            </a>
+                            <a href="https://cybersecuritynews.com/" target="_blank" class="flex flex-col bg-white border border-slate-200 p-4 rounded-xl hover:border-blue-400 hover:shadow-md transition-all group">
+                                <strong class="text-blue-700 group-hover:text-blue-800 flex items-center text-sm mb-1"><i class="fa-solid fa-arrow-up-right-from-square mr-2 text-xs"></i> Cyber Security News</strong>
+                                <span class="text-xs text-slate-500">Acompanhamento diário de violações de dados, ações de grupos de ransomware e atualizações de patches (0-days).</span>
+                            </a>
                         </div>
                     </div>
                 </div>
