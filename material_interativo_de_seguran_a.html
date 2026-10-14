@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fundamentos e Estratégia em Segurança da Informação</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS for transitions and specific layout needs -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+            color: #1e293b; /* slate-800 */
+        }
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Interactive Cards */
+        .cia-card {
+            transition: all 0.3s ease;
+        }
+        .cia-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Timeline styling */
+        .timeline-step {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .timeline-step:hover, .timeline-step.active-step {
+            background-color: #eff6ff; /* blue-50 */
+            border-left-color: #3b82f6; /* blue-500 */
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-slate-900 text-white shadow-md">
+        <div class="max-w-6xl mx-auto px-6 py-8">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold tracking-tight">Segurança da Informação</h1>
+                    <p class="mt-2 text-slate-300 text-sm md:text-base">Fundamentos, Estratégia e Governança • BSI & Eng. Computação</p>
+                </div>
+                <div class="hidden md:block">
+                    <i class="fa-solid fa-shield-halved text-5xl text-blue-500 opacity-80"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-6xl mx-auto px-4 sm:px-6 py-8 w-full">
+        
+        <!-- Navigation Tabs -->
+        <div class="bg-white rounded-t-xl shadow-sm border-b border-slate-200 overflow-x-auto">
+            <nav class="flex space-x-1 sm:space-x-4 px-2 py-2" aria-label="Tabs">
+                <button onclick="openTab('intro')" id="tab-btn-intro" class="tab-btn active bg-blue-50 text-blue-700 hover:bg-blue-100 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors flex items-center whitespace-nowrap">
+                    <i class="fa-solid fa-book-open mr-2"></i> Introdução
+                </button>
+                <button onclick="openTab('importancia')" id="tab-btn-importancia" class="tab-btn text-slate-500 hover:text-slate-700 hover:bg-slate-50 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors flex items-center whitespace-nowrap">
+                    <i class="fa-solid fa-bullseye mr-2"></i> Importância
+                </button>
+                <button onclick="openTab('triade')" id="tab-btn-triade" class="tab-btn text-slate-500 hover:text-slate-700 hover:bg-slate-50 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors flex items-center whitespace-nowrap">
+                    <i class="fa-solid fa-cube mr-2"></i> Tríade CIA
+                </button>
+                <button onclick="openTab('ciclo')" id="tab-btn-ciclo" class="tab-btn text-slate-500 hover:text-slate-700 hover:bg-slate-50 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors flex items-center whitespace-nowrap">
+                    <i class="fa-solid fa-rotate mr-2"></i> Ciclo de Vida
+                </button>
+            </nav>
+        </div>
+
+        <!-- Content Area -->
+        <div class="bg-white shadow-sm rounded-b-xl p-6 md:p-8 min-h-[500px]">
+            
+            <!-- TAB 1: Introdução -->
+            <div id="intro" class="tab-content active">
+                <h2 class="text-2xl font-bold text-slate-800 mb-4 border-b pb-2">A Natureza da Segurança da Informação</h2>
+                
+                <div class="prose max-w-none text-slate-600 leading-relaxed space-y-4">
+                    <p>
+                        No escopo da Engenharia da Computação e dos Sistemas de Informação, é comum reduzir a segurança à configuração de firewalls ou à correção de bugs em código. Contudo, a <strong>Segurança da Informação (SI)</strong> é uma disciplina estratégica e abrangente.
+                    </p>
+                    <p>
+                        Ela não se limita à tecnologia, mas engloba a interação contínua entre três pilares para proteger o ativo intangível mais crítico de uma organização: a <strong>informação</strong>.
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                        <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 text-center">
+                            <div class="w-12 h-12 mx-auto bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-4 text-xl">
+                                <i class="fa-solid fa-users"></i>
+                            </div>
+                            <h3 class="font-bold text-lg mb-2">Pessoas</h3>
+                            <p class="text-sm">Treinamento, conscientização contra engenharia social e cultura organizacional de segurança.</p>
+                        </div>
+                        <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 text-center">
+                            <div class="w-12 h-12 mx-auto bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-4 text-xl">
+                                <i class="fa-solid fa-gears"></i>
+                            </div>
+                            <h3 class="font-bold text-lg mb-2">Processos</h3>
+                            <p class="text-sm">Políticas (PSI), gestão de riscos (ISO 27001), auditorias e planos de resposta a incidentes.</p>
+                        </div>
+                        <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 text-center">
+                            <div class="w-12 h-12 mx-auto bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-4 text-xl">
+                                <i class="fa-solid fa-microchip"></i>
+                            </div>
+                            <h3 class="font-bold text-lg mb-2">Tecnologia</h3>
+                            <p class="text-sm">Criptografia, firewalls, IDS/IPS, controles de acesso e desenvolvimento seguro (OWASP).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: Importância -->
+            <div id="importancia" class="tab-content">
+                <h2 class="text-2xl font-bold text-slate-800 mb-6 border-b pb-2">Por que a Segurança é Crítica?</h2>
+                
+                <p class="text-slate-600 mb-8">A transição para arquiteturas distribuídas, nuvem e APIs abertas expandiu drasticamente a superfície de ataque. A preocupação com a SI hoje é impulsionada por vetores estratégicos fundamentais.</p>
+
+                <div class="space-y-4">
+                    <!-- Item 1 -->
+                    <div class="border border-slate-200 rounded-lg overflow-hidden group">
+                        <div class="bg-slate-50 px-5 py-4 flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fa-solid fa-server text-indigo-500 mr-3 text-lg"></i>
+                                <h3 class="font-bold text-slate-800">1. Continuidade Operacional e Resiliência</h3>
+                            </div>
+                        </div>
+                        <div class="px-5 py-4 bg-white text-slate-600 text-sm border-t border-slate-100">
+                            Incidentes como <em>Ransomware</em> não apenas furtam dados, mas destroem a capacidade de processamento da empresa. A engenharia de sistemas deve prever a resiliência desde a concepção (<em>Security by Design</em>). A falta de acesso à informação interrompe a cadeia produtiva e as vendas instantaneamente.
+                        </div>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="border border-slate-200 rounded-lg overflow-hidden">
+                        <div class="bg-slate-50 px-5 py-4 flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fa-solid fa-scale-balanced text-emerald-500 mr-3 text-lg"></i>
+                                <h3 class="font-bold text-slate-800">2. Conformidade Regulatória (Compliance)</h3>
+                            </div>
+                        </div>
+                        <div class="px-5 py-4 bg-white text-slate-600 text-sm border-t border-slate-100">
+                            O cenário jurídico impõe obrigações severas. O não cumprimento da <strong>LGPD (Lei Geral de Proteção de Dados)</strong> no Brasil ou da GDPR na Europa resulta em sanções financeiras pesadas, bloqueio de bases de dados e responsabilização civil dos gestores de TI.
+                        </div>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="border border-slate-200 rounded-lg overflow-hidden">
+                        <div class="bg-slate-50 px-5 py-4 flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fa-solid fa-building-shield text-rose-500 mr-3 text-lg"></i>
+                                <h3 class="font-bold text-slate-800">3. Reputação e Confiança no Mercado</h3>
+                            </div>
+                        </div>
+                        <div class="px-5 py-4 bg-white text-slate-600 text-sm border-t border-slate-100">
+                            Em um mercado movido a confiança, um vazamento de banco de dados ou a exploração de uma vulnerabilidade web (como as listadas no OWASP Top 10) corrói a credibilidade institucional de forma irreversível, afastando clientes e investidores.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: Tríade CIA -->
+            <div id="triade" class="tab-content">
+                <h2 class="text-2xl font-bold text-slate-800 mb-2 border-b pb-2">Os Princípios Fundamentais (Tríade CIA)</h2>
+                <p class="text-slate-600 mb-6 text-sm">A arquitetura de segurança de qualquer sistema é avaliada com base em pilares clássicos. Passe o mouse ou clique sobre os cards para mais detalhes.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <!-- Confidencialidade -->
+                    <div class="cia-card bg-white rounded-xl p-6 border-t-4 border-t-blue-500 shadow-sm border border-slate-200 relative overflow-hidden">
+                        <div class="absolute -right-4 -top-4 opacity-10">
+                            <i class="fa-solid fa-lock text-9xl text-blue-500"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800 mb-2 flex items-center">
+                            <i class="fa-solid fa-lock text-blue-500 mr-2"></i> Confidencialidade
+                        </h3>
+                        <p class="text-sm text-slate-600 mb-4">A garantia de que o dado não será exposto a entidades não autorizadas.</p>
+                        <div class="bg-blue-50 p-3 rounded text-xs text-blue-800 border border-blue-100">
+                            <strong>Controles Técnicos:</strong> Criptografia de dados em repouso (AES-256), controle de acesso (RBAC) e túneis VPN.
+                        </div>
+                    </div>
+
+                    <!-- Integridade -->
+                    <div class="cia-card bg-white rounded-xl p-6 border-t-4 border-t-emerald-500 shadow-sm border border-slate-200 relative overflow-hidden">
+                        <div class="absolute -right-4 -top-4 opacity-10">
+                            <i class="fa-solid fa-file-shield text-9xl text-emerald-500"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800 mb-2 flex items-center">
+                            <i class="fa-solid fa-file-shield text-emerald-500 mr-2"></i> Integridade
+                        </h3>
+                        <p class="text-sm text-slate-600 mb-4">A salvaguarda da exatidão e completude da informação, impedindo alterações indevidas.</p>
+                        <div class="bg-emerald-50 p-3 rounded text-xs text-emerald-800 border border-emerald-100">
+                            <strong>Controles Técnicos:</strong> Funções de resumo criptográfico (Hashes como SHA-256), Códigos MAC e logs de auditoria.
+                        </div>
+                    </div>
+
+                    <!-- Disponibilidade -->
+                    <div class="cia-card bg-white rounded-xl p-6 border-t-4 border-t-amber-500 shadow-sm border border-slate-200 relative overflow-hidden">
+                        <div class="absolute -right-4 -top-4 opacity-10">
+                            <i class="fa-solid fa-server text-9xl text-amber-500"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800 mb-2 flex items-center">
+                            <i class="fa-solid fa-server text-amber-500 mr-2"></i> Disponibilidade
+                        </h3>
+                        <p class="text-sm text-slate-600 mb-4">A garantia de que os sistemas e dados estarão acessíveis aos usuários legítimos.</p>
+                        <div class="bg-amber-50 p-3 rounded text-xs text-amber-800 border border-amber-100">
+                            <strong>Controles Técnicos:</strong> Balanceamento de carga, redundância (multi-AZ), backups e mitigação Anti-DDoS.
+                        </div>
+                    </div>
+                </div>
+
+                <h4 class="font-bold text-slate-700 mb-3"><i class="fa-solid fa-plus-circle text-indigo-500"></i> Princípios Complementares Críticos</h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                        <strong class="text-slate-800 block mb-1">Autenticidade</strong>
+                        <span class="text-sm text-slate-600">A verificação rigorosa da identidade de um usuário, processo ou dispositivo (ex: MFA, certificados X.509).</span>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                        <strong class="text-slate-800 block mb-1">Não Repúdio (Irretratabilidade)</strong>
+                        <span class="text-sm text-slate-600">Provar que uma ação ocorreu, impedindo que o autor negue sua autoria. Essencial em transações (ex: Assinatura Digital RSA/OpenPGP).</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: Ciclo de Vida -->
+            <div id="ciclo" class="tab-content">
+                <h2 class="text-2xl font-bold text-slate-800 mb-2 border-b pb-2">O Ciclo de Vida da Informação</h2>
+                <p class="text-slate-600 mb-6 text-sm">A informação transita por diferentes estados. Selecione uma etapa abaixo para visualizar as ameaças e os controles correspondentes.</p>
+
+                <div class="flex flex-col md:flex-row gap-6">
+                    <!-- Steps List -->
+                    <div class="w-full md:w-1/3 flex flex-col space-y-1">
+                        <div class="timeline-step active-step border-l-4 border-blue-500 p-3 rounded-r-md bg-blue-50" onclick="showPhase(1, this)">
+                            <h4 class="font-bold text-slate-800 text-sm">1. Criação / Classificação</h4>
+                        </div>
+                        <div class="timeline-step border-l-4 border-transparent pl-4 p-3 rounded-r-md text-slate-600" onclick="showPhase(2, this)">
+                            <h4 class="font-bold text-sm">2. Armazenamento</h4>
+                        </div>
+                        <div class="timeline-step border-l-4 border-transparent pl-4 p-3 rounded-r-md text-slate-600" onclick="showPhase(3, this)">
+                            <h4 class="font-bold text-sm">3. Processamento</h4>
+                        </div>
+                        <div class="timeline-step border-l-4 border-transparent pl-4 p-3 rounded-r-md text-slate-600" onclick="showPhase(4, this)">
+                            <h4 class="font-bold text-sm">4. Transmissão</h4>
+                        </div>
+                        <div class="timeline-step border-l-4 border-transparent pl-4 p-3 rounded-r-md text-slate-600" onclick="showPhase(5, this)">
+                            <h4 class="font-bold text-sm">5. Arquivamento</h4>
+                        </div>
+                        <div class="timeline-step border-l-4 border-transparent pl-4 p-3 rounded-r-md text-slate-600" onclick="showPhase(6, this)">
+                            <h4 class="font-bold text-sm">6. Descarte</h4>
+                        </div>
+                    </div>
+
+                    <!-- Step Content Display -->
+                    <div class="w-full md:w-2/3">
+                        <div id="phase-content" class="bg-white border border-slate-200 shadow-sm rounded-xl p-6 h-full transition-opacity duration-300">
+                            <!-- Default loaded content (Phase 1) -->
+                            <div class="flex items-center mb-4">
+                                <div class="bg-blue-100 text-blue-600 w-10 h-10 rounded-full flex items-center justify-center text-lg mr-4">
+                                    <i class="fa-solid fa-file-circle-plus"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-slate-800" id="phase-title">1. Criação e Classificação</h3>
+                            </div>
+                            <p class="text-slate-600 mb-4" id="phase-desc">O dado é gerado (ex: um formulário web é preenchido). Neste ponto, a arquitetura deve classificar o nível de sigilo da informação (Pública, Interna, Confidencial, Restrita).</p>
+                            
+                            <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                                <h5 class="text-sm font-bold text-slate-700 mb-2 uppercase tracking-wide">Controles Aplicáveis</h5>
+                                <ul class="list-disc list-inside text-sm text-slate-600 space-y-1" id="phase-controls">
+                                    <li>Rotulação de dados e metadados.</li>
+                                    <li>Mapeamento inicial de criticidade.</li>
+                                    <li>Aplicação de políticas da ISO 27001 para tratamento de ativos.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-auto">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center">
+            <div class="text-sm text-slate-500 mb-2 md:mb-0">
+                &copy; 2026 Instituto Federal Fluminense - Campus Campos Centro
+            </div>
+            <div class="text-sm text-slate-500 font-medium">
+                Disciplina: Segurança da Informação (2026.2)
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Interactivity -->
+    <script>
+        // Tab Navigation Logic
+        function openTab(tabId) {
+            // Hide all contents
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Deactivate all buttons
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('active', 'bg-blue-50', 'text-blue-700');
+                btn.classList.add('text-slate-500');
+            });
+
+            // Show selected content
+            document.getElementById(tabId).classList.add('active');
+
+            // Activate selected button
+            const activeBtn = document.getElementById('tab-btn-' + tabId);
+            activeBtn.classList.remove('text-slate-500');
+            activeBtn.classList.add('active', 'bg-blue-50', 'text-blue-700');
+        }
+
+        // Information Lifecycle Logic
+        const phaseData = {
+            1: {
+                title: "1. Criação e Classificação",
+                icon: "fa-file-circle-plus",
+                color: "blue",
+                desc: "O dado é gerado (ex: um formulário web é preenchido). Neste ponto, a arquitetura deve classificar o nível de sigilo da informação (Pública, Interna, Confidencial, Restrita).",
+                controls: [
+                    "Rotulação de dados e metadados.",
+                    "Mapeamento inicial de criticidade.",
+                    "Aplicação de políticas da ISO 27001 para tratamento de ativos."
+                ]
+            },
+            2: {
+                title: "2. Armazenamento (Data at Rest)",
+                icon: "fa-database",
+                color: "indigo",
+                desc: "Os dados persistem em bancos de dados (ex: PostgreSQL), storages na nuvem (AWS S3) ou sistemas de arquivos locais.",
+                controls: [
+                    "Criptografia de disco completo (FDE) e de tabelas de Banco de Dados.",
+                    "Ofuscação e mascaramento de dados sensíveis.",
+                    "Segregação de redes para isolar servidores de BD do tráfego público."
+                ]
+            },
+            3: {
+                title: "3. Processamento (Data in Use)",
+                icon: "fa-microchip",
+                color: "purple",
+                desc: "O dado está decriptado na memória RAM para ser processado pela CPU por uma aplicação. É a fase mais vulnerável a ataques de injeção e falhas lógicas.",
+                controls: [
+                    "Práticas de desenvolvimento seguro (Mitigação do OWASP Top 10).",
+                    "Validação e sanitização rigorosa de inputs e outputs.",
+                    "Isolamento de processos (Conteinerização com Docker)."
+                ]
+            },
+            4: {
+                title: "4. Transmissão (Data in Transit)",
+                icon: "fa-network-wired",
+                color: "emerald",
+                desc: "O dado trafega através de redes locais (LAN) ou públicas (Internet) entre clientes e servidores ou entre microsserviços.",
+                controls: [
+                    "Uso obrigatório de protocolos criptográficos (TLS/HTTPS).",
+                    "Filtragem de pacotes com firewalls (ex: iptables).",
+                    "Monitoramento contínuo com IDS (ex: Snort)."
+                ]
+            },
+            5: {
+                title: "5. Arquivamento e Retenção",
+                icon: "fa-box-archive",
+                color: "amber",
+                desc: "Guarda de longo prazo para compliance legal ou histórico (ex: logs de acesso retidos por 5 anos, exigência do Marco Civil).",
+                controls: [
+                    "Armazenamento imutável (WORM - Write Once, Read Many).",
+                    "Backups frios criptografados.",
+                    "Verificação periódica de integridade por hashes."
+                ]
+            },
+            6: {
+                title: "6. Descarte Seguro",
+                icon: "fa-trash-can",
+                color: "rose",
+                desc: "Quando o dado atinge o fim de sua utilidade legal e operacional, ele deve ser destruído de forma absolutamente irrecuperável.",
+                controls: [
+                    "Exclusão criptográfica (destruição irreversível das chaves de decriptação).",
+                    "Destruição física triturando mídias de armazenamento (HDDs, SSDs).",
+                    "Sobrescrita segura de setores magnéticos (Wipe)."
+                ]
+            }
+        };
+
+        function showPhase(phaseId, element) {
+            // Update UI selections
+            const steps = document.querySelectorAll('.timeline-step');
+            steps.forEach(step => {
+                step.classList.remove('active-step', 'bg-blue-50', 'border-blue-500');
+                step.classList.add('border-transparent');
+                
+                // Adjust text colors
+                const header = step.querySelector('h4');
+                header.classList.remove('text-slate-800');
+                header.classList.add('text-slate-600');
+            });
+
+            element.classList.add('active-step', 'bg-blue-50', 'border-blue-500');
+            element.classList.remove('border-transparent', 'pl-4'); // Keep padding consistent
+            element.classList.add('p-3');
+            
+            const activeHeader = element.querySelector('h4');
+            activeHeader.classList.remove('text-slate-600');
+            activeHeader.classList.add('text-slate-800');
+
+            // Update Content Panel with fade effect
+            const contentPanel = document.getElementById('phase-content');
+            contentPanel.style.opacity = 0;
+            
+            setTimeout(() => {
+                const data = phaseData[phaseId];
+                
+                document.getElementById('phase-title').textContent = data.title;
+                document.getElementById('phase-desc').textContent = data.desc;
+                
+                // Update Icon container
+                const iconContainer = document.getElementById('phase-title').previousElementSibling;
+                iconContainer.className = `bg-${data.color}-100 text-${data.color}-600 w-10 h-10 rounded-full flex items-center justify-center text-lg mr-4`;
+                iconContainer.innerHTML = `<i class="fa-solid ${data.icon}"></i>`;
+                
+                // Update controls list
+                const controlsList = document.getElementById('phase-controls');
+                controlsList.innerHTML = '';
+                data.controls.forEach(ctrl => {
+                    const li = document.createElement('li');
+                    li.textContent = ctrl;
+                    controlsList.appendChild(li);
+                });
+
+                contentPanel.style.opacity = 1;
+            }, 150);
+        }
+    </script>
+</body>
+</html>
