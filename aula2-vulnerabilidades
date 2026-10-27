@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material Didático: Estudo Aprofundado sobre Vulnerabilidades</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-text {
+            background-color: #1e3a8a;
+            background-image: linear-gradient(45deg, #1e3a8a, #3b82f6);
+            background-size: 100%;
+            -webkit-background-clip: text;
+            -moz-background-clip: text;
+            -webkit-text-fill-color: transparent; 
+            -moz-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-blue-200 selection:text-blue-900">
+
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                <span class="font-bold text-xl text-slate-800">Segurança da Informação</span>
+            </div>
+            <nav class="hidden md:flex gap-4 text-sm font-medium text-slate-600">
+                <a href="#conceitos" class="hover:text-blue-600 transition">Conceitos</a>
+                <a href="#taxonomia" class="hover:text-blue-600 transition">Taxonomia</a>
+                <a href="#ecossistema" class="hover:text-blue-600 transition">Métricas</a>
+                <a href="#gestao" class="hover:text-blue-600 transition">Gestão</a>
+                <a href="#ferramentas" class="hover:text-blue-600 transition">Ferramentas</a>
+                <a href="#avancado" class="hover:text-blue-600 transition">Avançado</a>
+                <a href="#referencias" class="hover:text-blue-600 transition">Referências</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        
+        <!-- Hero Section -->
+        <div class="text-center mb-16">
+            <span class="text-blue-600 font-semibold tracking-wider uppercase text-sm">Módulo Avançado</span>
+            <h1 class="text-4xl md:text-5xl font-extrabold mt-2 mb-4 text-slate-900">Estudo Aprofundado sobre <span class="gradient-text">Vulnerabilidades</span></h1>
+            <p class="text-lg text-slate-600 max-w-2xl mx-auto">Compreendendo as falhas, seu ciclo de vida, métricas de avaliação, ferramentas práticas e estratégias de mitigação no contexto corporativo e acadêmico.</p>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="p-8 sm:p-12">
+                
+                <section id="conceitos" class="mb-12">
+                    <h2 class="text-2xl font-bold text-slate-900 border-b border-slate-200 pb-2 mb-6">1. Fundamentos e Definições na Perspectiva da ISO</h2>
+                    
+                    <p class="text-slate-700 leading-relaxed mb-4">
+                        No núcleo da Segurança da Informação, o estudo das vulnerabilidades é a base para a construção de defesas resilientes. O framework normativo da família <strong>ISO/IEC 27000</strong> oferece a base conceitual sólida para o tema no ambiente corporativo e acadêmico. Segundo a <strong>ISO/IEC 27000:2018</strong>, vulnerabilidade é definida como uma <em>"fraqueza de um ativo ou controle que pode ser explorada por uma ou mais ameaças"</em>. Adicionalmente, a <strong>ISO/IEC 27005:2022</strong> (Gestão de Riscos de Segurança da Informação) enfatiza que as vulnerabilidades, por si só, não causam danos; elas necessitam de uma ameaça atuante para desencadear um incidente.
+                    </p>
+
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-5 rounded-r-lg my-6">
+                        <h3 class="font-bold text-blue-900 mb-2">Tríade do Risco (Ameaça x Vulnerabilidade x Impacto)</h3>
+                        <p class="text-blue-800 text-sm">
+                            É crucial não confundir estes três termos em provas e projetos acadêmicos:
+                            <ul class="list-disc ml-5 mt-2 space-y-1">
+                                <li><strong>Ameaça:</strong> Agente externo ou interno (hacker, desastre natural, malware) com potencial para causar dano.</li>
+                                <li><strong>Vulnerabilidade:</strong> A brecha, falha ou ausência de controle no nosso ambiente.</li>
+                                <li><strong>Risco:</strong> A probabilidade de uma ameaça explorar uma vulnerabilidade, multiplicada pelo impacto causado.</li>
+                            </ul>
+                        </p>
+                    </div>
+                </section>
+
+                <section id="taxonomia" class="mb-12">
+                    <h2 class="text-2xl font-bold text-slate-900 border-b border-slate-200 pb-2 mb-6">2. Taxonomia das Vulnerabilidades</h2>
+                    <p class="text-slate-700 leading-relaxed mb-6">As vulnerabilidades não residem apenas em linhas de código. Elas podem ser categorizadas em diversas camadas da arquitetura corporativa:</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-slate-50 p-5 rounded-lg border border-slate-100">
+                            <div class="flex items-center gap-2 mb-3">
+                                <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                                <h4 class="font-semibold text-slate-900">Vulnerabilidades de Software</h4>
+                            </div>
+                            <p class="text-sm text-slate-600">Falhas de lógica, ausência de validação de input (gerando SQL Injection, XSS), <em>Buffer Overflows</em>, ou uso de bibliotecas de terceiros desatualizadas e com falhas conhecidas.</p>
+                        </div>
+                        
+                        <div class="bg-slate-50 p-5 rounded-lg border border-slate-100">
+                            <div class="flex items-center gap-2 mb-3">
+                                <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                <h4 class="font-semibold text-slate-900">Misconfigurations (Má Configuração)</h4>
+                            </div>
+                            <p class="text-sm text-slate-600">Servidores expostos na internet, portas desnecessárias abertas, uso de senhas padrão de fábrica, ou permissões de nuvem excessivamente amplas (ex: S3 Buckets públicos).</p>
+                        </div>
+
+                        <div class="bg-slate-50 p-5 rounded-lg border border-slate-100">
+                            <div class="flex items-center gap-2 mb-3">
+                                <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                                <h4 class="font-semibold text-slate-900">Vulnerabilidades Humanas</h4>
+                            </div>
+                            <p class="text-sm text-slate-600">Considerado o "elo mais fraco". Envolve falta de conscientização, susceptibilidade à engenharia social (phishing, spear-phishing) e erros operacionais não intencionais.</p>
+                        </div>
+
+                        <div class="bg-slate-50 p-5 rounded-lg border border-slate-100">
+                            <div class="flex items-center gap-2 mb-3">
+                                <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                                <h4 class="font-semibold text-slate-900">Vulnerabilidades Físicas</h4>
+                            </div>
+                            <p class="text-sm text-slate-600">Ausência de controles de acesso a data centers, falta de redundância de energia, hardware obsoleto sujeito a falhas ou ausência de segurança perimetral (catracas, câmeras).</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="ecossistema" class="mb-12">
+                    <h2 class="text-2xl font-bold text-slate-900 border-b border-slate-200 pb-2 mb-6">3. O Ecossistema de Classificação e Métricas</h2>
+                    <p class="text-slate-700 leading-relaxed mb-4">Para que a comunidade global possa se comunicar efetivamente sobre ameaças, foram criados padrões e frameworks de catalogação e pontuação de vulnerabilidades de software.</p>
+                    
+                    <ul class="space-y-4 text-slate-700 mb-8">
+                        <li class="flex items-start">
+                            <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded mr-3 mt-0.5">CVE</span>
+                            <div>
+                                <strong>Common Vulnerabilities and Exposures:</strong> É um dicionário global. Cada vulnerabilidade pública recebe um ID único (ex: CVE-2021-44228, o famoso Log4Shell), facilitando a identificação sem ambiguidades.
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded mr-3 mt-0.5">NVD</span>
+                            <div>
+                                <strong>National Vulnerability Database:</strong> Banco de dados do governo dos EUA (NIST) que sincroniza com a lista CVE, anexando análises avançadas, métricas e links de patches de correção.
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded mr-3 mt-0.5">CWE</span>
+                            <div>
+                                <strong>Common Weakness Enumeration:</strong> Sistema formal de categorização de fraquezas em software, classificando a "causa raiz" (ex: CWE-79 - Cross-Site Scripting).
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="bg-purple-100 text-purple-800 text-xs font-bold px-2 py-1 rounded mr-3 mt-0.5">Exploit-DB</span>
+                            <div>
+                                <strong>The Exploit Database:</strong> Mantido pela <em>Offensive Security</em>, é um arquivo público essencial para fins acadêmicos e testes de intrusão. Enquanto o CVE e o NVD catalogam a <em>existência</em> da falha, o Exploit-DB hospeda <em>Proof of Concepts (PoCs)</em> e códigos reais (exploits) que demonstram <strong>como</strong> a vulnerabilidade pode ser ativamente explorada. Na prática docente e profissional, o Exploit-DB distingue o conceito teórico ("há uma falha") da demonstração empírica ("aqui está o script que compromete o sistema").
+                            </div>
+                        </li>
+                    </ul>
+
+                    <h3 class="font-semibold text-xl text-slate-800 mb-3">Métrica CVSS (Common Vulnerability Scoring System)</h3>
+                    
+                    <div class="bg-indigo-50 border-l-4 border-indigo-500 p-4 rounded-r-lg mb-5">
+                        <h4 class="font-bold text-indigo-900 mb-1 flex items-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
+                            O que é o FIRST?
+                        </h4>
+                        <p class="text-indigo-800 text-sm">
+                            O <strong>Forum of Incident Response and Security Teams (FIRST)</strong> é a confederação global líder de equipes de resposta a incidentes (CERTs e CSIRTs). Fundada em 1990, atua como uma organização sem fins lucrativos que promove a cooperação entre governos, setor privado e academia. É o FIRST a entidade oficial responsável por criar, manter e evoluir frameworks globais de padronização, como o <strong>CVSS</strong> (para gravidade técnica) e o <strong>EPSS</strong> (para probabilidade de exploração), garantindo que a comunidade global e as ferramentas de segurança "falem a mesma língua" na gestão de riscos cibernéticos.
+                        </p>
+                    </div>
+
+                    <p class="text-slate-700 text-sm mb-4">O CVSS fornece uma forma matemática de capturar as principais características de uma vulnerabilidade e produzir uma pontuação numérica (de 0.0 a 10.0) refletindo sua gravidade.</p>
+
+                    <div class="overflow-x-auto rounded-lg border border-slate-200">
+                        <table class="w-full text-left text-sm text-slate-600">
+                            <thead class="bg-slate-100 text-slate-700 uppercase font-semibold">
+                                <tr>
+                                    <th class="px-4 py-3">Severidade (CVSS v3.1)</th>
+                                    <th class="px-4 py-3">Pontuação</th>
+                                    <th class="px-4 py-3">Descrição / Ação</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200">
+                                <tr class="bg-white">
+                                    <td class="px-4 py-3 flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-slate-400"></span> Nenhum</td>
+                                    <td class="px-4 py-3 font-mono text-slate-900">0.0</td>
+                                    <td class="px-4 py-3">Sem impacto computacional. Informativo.</td>
+                                </tr>
+                                <tr class="bg-white">
+                                    <td class="px-4 py-3 flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-green-500"></span> Baixa</td>
+                                    <td class="px-4 py-3 font-mono text-slate-900">0.1 - 3.9</td>
+                                    <td class="px-4 py-3">Impacto mínimo. Mitigação pode ser programada para janelas normais.</td>
+                                </tr>
+                                <tr class="bg-white">
+                                    <td class="px-4 py-3 flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-yellow-500"></span> Média</td>
+                                    <td class="px-4 py-3 font-mono text-slate-900">4.0 - 6.9</td>
+                                    <td class="px-4 py-3">Exploração pode ser difícil ou impacto limitado. Requer planejamento de patch.</td>
+                                </tr>
+                                <tr class="bg-white">
+                                    <td class="px-4 py-3 flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-orange-500"></span> Alta</td>
+                                    <td class="px-4 py-3 font-mono text-slate-900">7.0 - 8.9</td>
+                                    <td class="px-4 py-3">Exploração viável, impacto significativo. Exige atenção imediata.</td>
+                                </tr>
+                                <tr class="bg-white">
+                                    <td class="px-4 py-3 flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-red-600 animate-pulse"></span> Crítica</td>
+                                    <td class="px-4 py-3 font-mono text-slate-900 font-bold text-red-600">9.0 - 10.0</td>
+                                    <td class="px-4 py-3">Geralmente Remota, sem autenticação, comprometimento total. <strong>Patch imediato/Emergência.</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="gestao" class="mb-12">
+                    <h2 class="text-2xl font-bold text-slate-900 border-b border-slate-200 pb-2 mb-6">4. Ciclo de Vida da Gestão de Vulnerabilidades</h2>
+                    <p class="text-slate-700 leading-relaxed mb-6">Academicamente e no contexto corporativo maduro, a gestão de vulnerabilidades transcende a simples execução de varreduras de rede. Trata-se de um <strong>processo contínuo e estratégico de governança</strong>, alinhado ao apetite de risco da organização e às diretrizes da ISO 27001. Consiste em 4 fases iterativas:</p>
+
+                    <div class="relative border-l border-slate-200 ml-3 md:ml-0 space-y-8">
+                        <div class="relative pl-8 md:pl-10">
+                            <div class="absolute -left-3 md:-left-3.5 bg-blue-600 text-white font-bold w-6 h-6 md:w-7 md:h-7 rounded-full flex items-center justify-center text-sm ring-4 ring-white">1</div>
+                            <h4 class="font-bold text-lg text-slate-900">Descoberta (Discovery & Assessment)</h4>
+                            <p class="text-slate-600 text-sm mt-1">Mapeamento de ativos e uso de ferramentas de automação (DAST, SAST, Scanners de Rede) para varrer sistemas em busca de falhas conhecidas, portas abertas e má configurações.</p>
+                        </div>
+                        <div class="relative pl-8 md:pl-10">
+                            <div class="absolute -left-3 md:-left-3.5 bg-blue-600 text-white font-bold w-6 h-6 md:w-7 md:h-7 rounded-full flex items-center justify-center text-sm ring-4 ring-white">2</div>
+                            <h4 class="font-bold text-lg text-slate-900">Priorização (Baseada em Risco e Inteligência)</h4>
+                            <p class="text-slate-600 text-sm mt-1">Análise inteligente dos resultados. A priorização deve combinar a gravidade técnica (CVSS) com a criticidade do ativo para o negócio. Uma falha CVSS 9.8 em um ambiente de testes pode ser menos urgente que um CVSS 7.5 na base de dados de clientes. Além disso, a verificação de inteligência de ameaças (por exemplo, checar se há um exploit público funcional no <em>Exploit-DB</em> para aquela falha) eleva a urgência de correção exponencialmente.</p>
+                        </div>
+                        <div class="relative pl-8 md:pl-10">
+                            <div class="absolute -left-3 md:-left-3.5 bg-blue-600 text-white font-bold w-6 h-6 md:w-7 md:h-7 rounded-full flex items-center justify-center text-sm ring-4 ring-white">3</div>
+                            <h4 class="font-bold text-lg text-slate-900">Remediação e Mitigação</h4>
+                            <p class="text-slate-600 text-sm mt-1">Aplicação de Patches (correção definitiva no código/sistema), desativação de serviços desnecessários, ou aplicação de <em>Virtual Patching</em>/Controles Compensatórios (ex: criar uma regra de Web Application Firewall - WAF para bloquear as assinaturas de um ataque conhecido caso o fornecedor do software ainda não tenha lançado a correção oficial).</p>
+                        </div>
+                        <div class="relative pl-8 md:pl-10">
+                            <div class="absolute -left-3 md:-left-3.5 bg-blue-600 text-white font-bold w-6 h-6 md:w-7 md:h-7 rounded-full flex items-center justify-center text-sm ring-4 ring-white">4</div>
+                            <h4 class="font-bold text-lg text-slate-900">Reavaliação e Verificação</h4>
+                            <p class="text-slate-600 text-sm mt-1">Novas varreduras para confirmar que os patches foram bem-sucedidos e não quebraram dependências. O ciclo então se reinicia, adaptando-se a novas ameaças diárias.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="ferramentas" class="mb-12">
+                    <h2 class="text-2xl font-bold text-slate-900 border-b border-slate-200 pb-2 mb-6">5. Principais Ferramentas de Varredura e Gestão</h2>
+                    <p class="text-slate-700 leading-relaxed mb-6">A operacionalização da fase de Descoberta exige softwares especializados. Abaixo, destacam-se as ferramentas mais utilizadas na academia e na indústria para identificar e gerenciar vulnerabilidades:</p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        
+                        <!-- Tool 1 -->
+                        <div class="border border-slate-200 p-5 rounded-xl bg-white shadow-sm hover:border-blue-300 transition-colors">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div class="w-10 h-10 rounded bg-blue-100 flex items-center justify-center text-blue-700 font-bold">N</div>
+                                <div>
+                                    <h4 class="font-bold text-slate-900">Tenable Nessus</h4>
+                                    <span class="text-xs font-semibold text-slate-500 uppercase">Scanner de Infraestrutura</span>
+                                </div>
+                            </div>
+                            <p class="text-sm text-slate-600 mt-2">Considerado o padrão da indústria. Executa varreduras profundas em redes, servidores e sistemas operacionais. A versão <em>Nessus Essentials</em> é gratuita e ideal para laboratórios de graduação.</p>
+                        </div>
+
+                        <!-- Tool 2 -->
+                        <div class="border border-slate-200 p-5 rounded-xl bg-white shadow-sm hover:border-blue-300 transition-colors">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div class="w-10 h-10 rounded bg-green-100 flex items-center justify-center text-green-700 font-bold">O</div>
+                                <div>
+                                    <h4 class="font-bold text-slate-900">OpenVAS (Greenbone)</h4>
+                                    <span class="text-xs font-semibold text-slate-500 uppercase">Scanner Open Source</span>
+                                </div>
+                            </div>
+                            <p class="text-sm text-slate-600 mt-2">A principal alternativa de código aberto ao Nessus. Muito utilizado em pesquisas acadêmicas, permite personalização de testes e automação via linha de comando no Linux.</p>
+                        </div>
+
+                        <!-- Tool 3 -->
+                        <div class="border border-slate-200 p-5 rounded-xl bg-white shadow-sm hover:border-blue-300 transition-colors">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div class="w-10 h-10 rounded bg-amber-100 flex items-center justify-center text-amber-700 font-bold">Z</div>
+                                <div>
+                                    <h4 class="font-bold text-slate-900">OWASP ZAP</h4>
+                                    <span class="text-xs font-semibold text-slate-500 uppercase">Scanner Web (DAST)</span>
+                                </div>
+                            </div>
+                            <p class="text-sm text-slate-600 mt-2">Mantido pela OWASP, é a ferramenta gratuita líder mundial para testes de segurança em aplicações web (Web Apps e APIs). Foca em encontrar falhas de injeção e lógica web (camada 7).</p>
+                        </div>
+
+                        <!-- Tool 4 -->
+                        <div class="border border-slate-200 p-5 rounded-xl bg-white shadow-sm hover:border-blue-300 transition-colors">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div class="w-10 h-10 rounded bg-purple-100 flex items-center justify-center text-purple-700 font-bold">Q</div>
+                                <div>
+                                    <h4 class="font-bold text-slate-900">Qualys / InsightVM</h4>
+                                    <span class="text-xs font-semibold text-slate-500 uppercase">Gestão Corporativa</span>
+                                </div>
+                            </div>
+                            <p class="text-sm text-slate-600 mt-2">Plataformas comerciais completas. Vão além do scan, fornecendo painéis de governança (dashboards), gestão contínua de risco e inventário focado em ambientes corporativos extensos.</p>
+                        </div>
+
+                    </div>
+                </section>
+
+                <section id="avancado" class="mb-12">
+                    <h2 class="text-2xl font-bold text-slate-900 border-b border-slate-200 pb-2 mb-6">6. Tópicos Avançados e Contemporâneos</h2>
+                    <p class="text-slate-700 leading-relaxed mb-6">A evolução das ameaças cibernéticas exige que a compreensão acadêmica sobre vulnerabilidades vá além das métricas tradicionais. Os conceitos a seguir representam o estado da arte na pesquisa e no mercado profissional atual:</p>
+                    
+                    <div class="space-y-4">
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                            <h4 class="font-bold text-slate-900 text-lg flex items-center gap-2">
+                                <span class="bg-red-100 text-red-700 px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider">Ameaça</span>
+                                Vulnerabilidades Zero-Day e a Janela de Exposição
+                            </h4>
+                            <p class="text-slate-600 text-sm mt-2">Uma vulnerabilidade <em>Zero-Day</em> (0-day) é uma falha de software desconhecida pelo fornecedor ou que ainda não possui correção (patch) disponível. A "janela de exposição" é o tempo entre a descoberta da falha por agentes maliciosos e a aplicação do patch pelas empresas. Durante esse período, assinaturas tradicionais falham, tornando essenciais abordagens de defesa em profundidade e análises heurísticas.</p>
+                            
+                            <div class="mt-4 p-4 bg-slate-50 border border-slate-200 rounded-lg">
+                                <h5 class="text-sm font-bold text-slate-800 mb-3 border-b border-slate-200 pb-1">Casos de Estudo (Notícias Reais):</h5>
+                                <ul class="list-disc ml-5 space-y-2 text-sm text-slate-700 mb-5">
+                                    <li><strong>Stuxnet (2010):</strong> O caso acadêmico mais famoso de "Cyber Warfare". Um worm criado por Estados-Nação (EUA/Israel) para sabotar centrífugas do programa nuclear iraniano. O código malicioso utilizou incríveis <em>quatro</em> vulnerabilidades Zero-Day no Windows para se propagar de forma autônoma em redes industriais isoladas da internet (Air-Gapped).</li>
+                                    <li><strong>Pegasus (NSO Group):</strong> Um spyware avançado comercializado para governos, capaz de infectar iPhones e Androids utilizando explorações <em>"Zero-Click"</em> em aplicativos como WhatsApp e iMessage. Na exploração <em>Zero-Click</em>, o ataque ocorre invisivelmente sem que a vítima clique em absolutamente nada.</li>
+                                    <li><strong>Log4Shell (2021):</strong> Uma falha na biblioteca de log em Java (Log4j). Descoberta por desenvolvedores que jogavam Minecraft, rapidamente tornou-se um dos Zero-Days de maior impacto da década devido ao amplo uso da biblioteca em sistemas corporativos globais.</li>
+                                </ul>
+                                
+                                <div class="flex items-center gap-3 text-sm font-medium text-slate-800 bg-white border border-slate-200 p-3 rounded shadow-sm">
+                                    <svg class="w-6 h-6 text-red-600 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"></path></svg>
+                                    <div>
+                                        <span class="block text-xs uppercase tracking-wide text-slate-500 font-bold mb-0.5">Material Audiovisual Didático</span>
+                                        <a href="https://www.youtube.com/watch?v=P_M0DjGXkOg" target="_blank" class="text-blue-600 hover:text-blue-800 hover:underline transition-colors">
+                                            Entenda na prática: O que são Zero-Day Exploits? (Canal TecMundo)
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                            <h4 class="font-bold text-slate-900 text-lg flex items-center gap-2">
+                                <span class="bg-purple-100 text-purple-700 px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider">Tática</span>
+                                Vulnerability Chaining (Encadeamento de Vulnerabilidades)
+                            </h4>
+                            <p class="text-slate-600 text-sm mt-2">No cenário prático, atacantes avançados raramente dependem de uma única falha "Crítica". O <em>Chaining</em> ocorre quando múltiplas vulnerabilidades de baixo impacto são combinadas. Por exemplo: o vazamento de uma credencial comum (Severidade Baixa), somado a uma falha de escalonamento de privilégio local (Severidade Média), resulta no comprometimento total do sistema servidor (Crítico).</p>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                            <h4 class="font-bold text-slate-900 text-lg flex items-center gap-2">
+                                <span class="bg-green-100 text-green-700 px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider">Ética</span>
+                                Divulgação Coordenada e Bug Bounty
+                            </h4>
+                            <p class="text-slate-600 text-sm mt-2">A <em>Coordinated Vulnerability Disclosure</em> (Divulgação Coordenada) é a prática técnica e ética onde o pesquisador relata a falha privadamente ao fabricante e aguarda a criação do patch antes de publicá-la (em repositórios como o Exploit-DB). Paralelamente, programas de <em>Bug Bounty</em> oferecem recompensas financeiras de forma legal para pesquisadores, incentivando um ciclo sadio de auditoria de código.</p>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                            <h4 class="font-bold text-slate-900 text-lg flex items-center gap-2">
+                                <span class="bg-orange-100 text-orange-700 px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider">Arquitetura</span>
+                                Supply Chain Attacks e SBOM
+                            </h4>
+                            <p class="text-slate-600 text-sm mt-2">O desenvolvimento de software moderno depende extensamente de bibliotecas de terceiros (NPM, PyPI, Maven). Uma vulnerabilidade inserida em uma biblioteca pequena pode comprometer toda a "cadeia de suprimentos". Para mitigar isso, as práticas mais modernas exigem o controle via <strong>SBOM</strong> (<em>Software Bill of Materials</em>) – uma espécie de "lista de ingredientes" digitais para localizar rapidamente dependências afetadas (como no famoso caso do Log4j).</p>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                            <h4 class="font-bold text-slate-900 text-lg flex items-center gap-2">
+                                <span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider">Priorização</span>
+                                EPSS (Exploit Prediction Scoring System)
+                            </h4>
+                            <p class="text-slate-600 text-sm mt-2">Enquanto o CVSS clássico mede a <em>gravidade</em> e o impacto potencial, o <strong>EPSS</strong>, também mantido pelo FIRST, utiliza Inteligência Artificial e vasta telemetria de ataques reais para prever a <strong>probabilidade</strong> (de 0 a 100%) de uma falha ser explorada na internet nos próximos 30 dias. A interseção de um CVSS alto com um EPSS alto é a bússola mais precisa para a governança de correções hoje.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="referencias" class="bg-slate-100 p-6 rounded-xl border border-slate-200">
+                    <h2 class="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
+                        <svg class="w-6 h-6 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                        Referências Bibliográficas Recomendadas
+                    </h2>
+                    
+                    <ul class="space-y-3 text-sm text-slate-700">
+                        <li class="pl-4 border-l-2 border-blue-400">
+                            <strong>STALLINGS, William; BROWN, Lawrie.</strong> <em>Segurança de Computadores: Princípios e Práticas.</em> 2ª edição. Rio de Janeiro: Elsevier, 2014. (Capítulos sobre softwares maliciosos e vulnerabilidades de sistemas).
+                        </li>
+                        <li class="pl-4 border-l-2 border-blue-400">
+                            <strong>ISO/IEC.</strong> <em>ISO/IEC 27000:2018 - Information technology — Security techniques — Information security management systems — Overview and vocabulary.</em> Genebra: ISO, 2018.
+                        </li>
+                        <li class="pl-4 border-l-2 border-blue-400">
+                            <strong>ISO/IEC.</strong> <em>ISO/IEC 27005:2022 - Information security, cybersecurity and privacy protection — Guidance on managing information security risks.</em> Genebra: ISO, 2022.
+                        </li>
+                        <li class="pl-4 border-l-2 border-blue-400">
+                            <strong>NIST.</strong> <em>Special Publication 800-30 Revision 1: Guide for Conducting Risk Assessments.</em> National Institute of Standards and Technology, Gaithersburg, MD, 2012. Disponível em: <a href="https://csrc.nist.gov/publications/detail/sp/800-30/rev-1/final" target="_blank" class="text-blue-600 hover:underline">NIST SP 800-30</a>.
+                        </li>
+                        <li class="pl-4 border-l-2 border-blue-400">
+                            <strong>FIRST.</strong> <em>Common Vulnerability Scoring System (CVSS) v3.1: Specification Document.</em> Forum of Incident Response and Security Teams. Disponível em: <a href="https://www.first.org/cvss/v3.1/specification-document" target="_blank" class="text-blue-600 hover:underline">FIRST.org/cvss</a>.
+                        </li>
+                        <li class="pl-4 border-l-2 border-blue-400">
+                            <strong>OWASP.</strong> <em>OWASP Top 10 - 2021: As 10 principais vulnerabilidades em aplicações Web.</em> The Open Web Application Security Project. Disponível em: <a href="https://owasp.org/Top10/" target="_blank" class="text-blue-600 hover:underline">OWASP.org</a>.
+                        </li>
+                        <li class="pl-4 border-l-2 border-purple-400">
+                            <strong>OFFENSIVE SECURITY.</strong> <em>The Exploit Database.</em> Repositório oficial de Exploits e PoCs (Proof of Concepts) para uso em segurança ofensiva e pesquisa acadêmica. Disponível em: <a href="https://www.exploit-db.com/" target="_blank" class="text-purple-600 hover:underline">exploit-db.com</a>.
+                        </li>
+                    </ul>
+                </section>
+
+            </div>
+            
+            <div class="bg-slate-50 border-t border-slate-200 px-8 py-4 text-center text-sm text-slate-500">
+                Criado para o laboratório de Segurança da Informação. Material licenciado sob <em>Creative Commons</em>.
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>
