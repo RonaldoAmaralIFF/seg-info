@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratório Interativo: Criptografia Híbrida (RSA + AES + SHA-256)</title>
+    <!-- Carregamento do Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fontes Google: Inter (interface) e JetBrains Mono (terminal/hashes) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Suavização de rolagem e animações sutis */
+        html { scroll-behavior: smooth; }
+        @keyframes pulse-ring {
+            0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.45); }
+            70% { box-shadow: 0 0 0 10px rgba(99, 102, 241, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
+        }
+        .active-node {
+            animation: pulse-ring 2s infinite;
+        }
+        /* Oculta barra de rolagem horizontal em menus de passos mantendo o scroll funcional */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-indigo-500 selection:text-white">
+
+    <!-- Notificação Toast (substitui alert) -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="bg-emerald-600 text-white px-4 py-3 rounded-xl shadow-2xl border border-emerald-400/30 flex items-center gap-2 text-sm font-medium">
+            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+            <span id="toast-msg">Ação realizada!</span>
+        </div>
+    </div>
+
+    <!-- Barra de Navegação Fixa -->
+    <header class="sticky top-0 z-40 bg-slate-950/85 backdrop-blur-md border-b border-slate-800">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                </div>
+                <div>
+                    <h1 class="text-sm sm:text-base font-bold tracking-tight text-white">Lab de Criptografia Híbrida</h1>
+                    <p class="text-xs text-slate-400">RSA + AES-256-CBC + SHA-256 • OpenSSL no Cloud Shell</p>
+                </div>
+            </div>
+            <nav class="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm font-medium">
+                <a href="#problema" class="px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition">1. O Problema</a>
+                <a href="#simulador" class="px-3 py-2 rounded-lg bg-indigo-600/20 text-indigo-300 border border-indigo-500/30 hover:bg-indigo-600 hover:text-white transition">2. Passo a Passo</a>
+                <a href="#checklist" class="px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition">3. Checklist & Entrega</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-16">
+
+        <!-- HERO & INTRODUÇÃO -->
+        <section class="text-center max-w-3xl mx-auto space-y-4">
+            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/15 text-indigo-300 border border-indigo-500/30">
+                <span class="w-2 h-2 rounded-full bg-indigo-400 animate-pulse"></span>
+                Guia Interativo da Atividade em Duplas
+            </span>
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight">
+                Como enviar um arquivo secreto por um <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400">Google Drive público</span>?
+            </h2>
+            <p class="text-slate-400 text-base sm:text-lg leading-relaxed">
+                Entenda o desafio por trás da criptografia moderna e acompanhe, passo a passo, como combinar <strong>AES</strong>, <strong>RSA</strong> e <strong>SHA-256</strong> no terminal do Google Cloud Shell para garantir confidencialidade e integridade.
+            </p>
+        </section>
+
+        <!-- SEÇÃO 1: O PROBLEMA E A SOLUÇÃO HÍBRIDA -->
+        <section id="problema" class="scroll-mt-24 space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-slate-800 pb-4">
+                <div>
+                    <h3 class="text-xl sm:text-2xl font-bold text-white">1. O Problema vs. A Solução Híbrida</h3>
+                    <p class="text-sm text-slate-400 mt-1">Por que precisamos usar 3 algoritmos diferentes nesta atividade?</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <!-- Card 1: Problema do AES puro -->
+                <div class="bg-slate-900/80 border border-rose-500/25 rounded-2xl p-5 flex flex-col justify-between space-y-4 hover:border-rose-500/50 transition">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-rose-500/15 text-rose-300">Tentativa 1</span>
+                            <span class="text-xs font-mono text-slate-400">Só AES (Simétrica)</span>
+                        </div>
+                        <h4 class="text-lg font-bold text-white">Rápida, mas como passar a senha?</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            O algoritmo <strong>AES</strong> cifra arquivos grandes (imagens, PDFs) em milissegundos usando uma única senha. O problema: se você colocar o arquivo e a senha na pasta compartilhada do Drive, <strong>qualquer pessoa da turma lê a senha</strong> e abre o arquivo.
+                        </p>
+                    </div>
+                    <div class="p-3 rounded-xl bg-rose-950/40 border border-rose-500/20 text-xs text-rose-200 flex items-center gap-2">
+                        <span>❌</span>
+                        <span><strong>Falha:</strong> Problema da distribuição segura da chave.</span>
+                    </div>
+                </div>
+
+                <!-- Card 2: Problema do RSA puro -->
+                <div class="bg-slate-900/80 border border-amber-500/25 rounded-2xl p-5 flex flex-col justify-between space-y-4 hover:border-amber-500/50 transition">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-amber-500/15 text-amber-300">Tentativa 2</span>
+                            <span class="text-xs font-mono text-slate-400">Só RSA (Assimétrica)</span>
+                        </div>
+                        <h4 class="text-lg font-bold text-white">Segura na troca, mas não cifra arquivos</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            O <strong>RSA</strong> resolve a troca de segredos: qualquer um cifra com a <em>Chave Pública</em> do colega, e só ele abre com a <em>Chave Privada</em>. Porém, o RSA-2048 é lento e suporta no máximo <strong>~245 bytes</strong> de dados! Um PDF ou foto falha imediatamente.
+                        </p>
+                    </div>
+                    <div class="p-3 rounded-xl bg-amber-950/40 border border-amber-500/20 text-xs text-amber-200 flex items-center gap-2">
+                        <span>⚠️</span>
+                        <span><strong>Falha:</strong> Limite minúsculo de tamanho e baixo desempenho.</span>
+                    </div>
+                </div>
+
+                <!-- Card 3: Solução Híbrida -->
+                <div class="bg-gradient-to-b from-indigo-950/60 to-slate-900 border border-emerald-500/40 rounded-2xl p-5 flex flex-col justify-between space-y-4 shadow-lg shadow-emerald-950/20">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-emerald-500/20 text-emerald-300">Solução Adotada</span>
+                            <span class="text-xs font-mono text-emerald-300">Híbrida + Hash</span>
+                        </div>
+                        <h4 class="text-lg font-bold text-white">O melhor dos dois mundos</h4>
+                        <ul class="text-sm text-slate-200 space-y-2">
+                            <li class="flex items-start gap-2"><span class="text-cyan-400 font-bold">1.</span><span><strong>AES-256</strong> cifra o arquivo pesado (rápido).</span></li>
+                            <li class="flex items-start gap-2"><span class="text-indigo-400 font-bold">2.</span><span><strong>RSA-2048</strong> cifra apenas o textinho com a senha do AES (pequeno e seguro).</span></li>
+                            <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold">3.</span><span><strong>SHA-256</strong> gera uma "impressão digital" para provar que o arquivo não foi alterado.</span></li>
+                        </ul>
+                    </div>
+                    <div class="p-3 rounded-xl bg-emerald-950/50 border border-emerald-500/30 text-xs text-emerald-200 flex items-center gap-2">
+                        <span>✅</span>
+                        <span><strong>Sucesso:</strong> É a mesma lógica usada no HTTPS (TLS)!</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO 2: SIMULADOR INTERATIVO PASSO A PASSO -->
+        <section id="simulador" class="scroll-mt-24 space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-slate-800 pb-4">
+                <div>
+                    <h3 class="text-xl sm:text-2xl font-bold text-white">2. Simulador do Fluxo Completo (Passo a Passo)</h3>
+                    <p class="text-sm text-slate-400 mt-1">Personalize os dados abaixo e navegue pelas etapas para ver exatamente o que acontece nos bastidores.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-xs text-slate-400">Etapa atual:</span>
+                    <span id="step-counter-badge" class="px-3 py-1 rounded-full bg-indigo-600 text-white text-xs font-bold font-mono">1 / 10</span>
+                </div>
+            </div>
+
+            <!-- Painel de Personalização em Tempo Real -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5">
+                <div class="flex items-center gap-2 mb-3">
+                    <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+                    <span class="text-xs font-bold uppercase tracking-wider text-slate-300">Parâmetros da Simulação (Edite para testar o hash real!)</span>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                        <label for="sim-filename" class="block text-xs text-slate-400 mb-1">Arquivo Base Escolhido</label>
+                        <input id="sim-filename" type="text" value="relatorio_lab.txt" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm font-mono text-white focus:outline-none focus:border-indigo-500 transition">
+                    </div>
+                    <div>
+                        <label for="sim-content" class="block text-xs text-slate-400 mb-1">Conteúdo do Arquivo (calcula SHA-256 real)</label>
+                        <input id="sim-content" type="text" value="Nota da dupla: 10.0 em Seguranca da Informacao!" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500 transition">
+                    </div>
+                    <div>
+                        <label for="sim-password" class="block text-xs text-slate-400 mb-1">Senha Forte do AES (Chave Simétrica)</label>
+                        <input id="sim-password" type="text" value="Cripto@2026#Segura" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm font-mono text-amber-300 focus:outline-none focus:border-indigo-500 transition">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mapa Visual de Topologia (Alice -> Google Drive -> Bob) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- Nó 1: Remetente (Alice) -->
+                <div id="node-alice" class="bg-slate-900/90 border-2 border-slate-800 rounded-2xl p-4 transition-all duration-300">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-300 flex items-center justify-center font-bold text-sm">A</span>
+                            <div>
+                                <h4 class="text-sm font-bold text-white">Remetente (Alice)</h4>
+                                <p class="text-[11px] text-slate-400">VM Google Cloud Shell</p>
+                            </div>
+                        </div>
+                        <span id="badge-alice" class="hidden px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-500 text-white uppercase">Ativo</span>
+                    </div>
+                    <div id="files-alice" class="space-y-1.5 text-xs font-mono min-h-[76px]">
+                        <!-- Preenchido dinamicamente via JS -->
+                    </div>
+                </div>
+
+                <!-- Nó 2: Canal Público (Google Drive) -->
+                <div id="node-drive" class="bg-slate-900/90 border-2 border-slate-800 rounded-2xl p-4 transition-all duration-300">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-300 flex items-center justify-center font-bold text-sm">☁️</span>
+                            <div>
+                                <h4 class="text-sm font-bold text-white">Google Drive (Público)</h4>
+                                <p class="text-[11px] text-slate-400">Pasta compartilhada da turma</p>
+                            </div>
+                        </div>
+                        <span id="badge-drive" class="hidden px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500 text-slate-950 uppercase">Trânsito</span>
+                    </div>
+                    <div id="files-drive" class="space-y-1.5 text-xs font-mono min-h-[76px]">
+                        <!-- Preenchido dinamicamente via JS -->
+                    </div>
+                </div>
+
+                <!-- Nó 3: Destinatário (Bob) -->
+                <div id="node-bob" class="bg-slate-900/90 border-2 border-slate-800 rounded-2xl p-4 transition-all duration-300">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-300 flex items-center justify-center font-bold text-sm">B</span>
+                            <div>
+                                <h4 class="text-sm font-bold text-white">Destinatário (Bob)</h4>
+                                <p class="text-[11px] text-slate-400">VM Google Cloud Shell</p>
+                            </div>
+                        </div>
+                        <span id="badge-bob" class="hidden px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500 text-slate-950 uppercase">Ativo</span>
+                    </div>
+                    <div id="files-bob" class="space-y-1.5 text-xs font-mono min-h-[76px]">
+                        <!-- Preenchido dinamicamente via JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Barra de Navegação dos Passos (Pills clicáveis) -->
+            <div class="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar" id="step-pills">
+                <!-- Gerado dinamicamente via JS -->
+            </div>
+
+            <!-- Card Principal do Passo Selecionado -->
+            <div class="bg-slate-900 border border-slate-700/80 rounded-2xl overflow-hidden shadow-2xl">
+                <!-- Cabeçalho do Passo -->
+                <div class="bg-slate-800/70 px-5 sm:px-6 py-4 border-b border-slate-700/70 flex flex-wrap items-center justify-between gap-3">
+                    <div class="space-y-1">
+                        <span id="step-phase" class="text-xs font-bold uppercase tracking-wider text-indigo-400">FASE</span>
+                        <h4 id="step-title" class="text-lg sm:text-xl font-bold text-white">Título do Passo</h4>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button id="btn-prev" onclick="changeStep(-1)" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-sm font-medium text-slate-200 disabled:opacity-40 disabled:cursor-not-allowed transition flex items-center gap-1">
+                            <span>←</span> Anterior
+                        </button>
+                        <button id="btn-next" onclick="changeStep(1)" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-sm font-semibold text-white disabled:opacity-40 disabled:cursor-not-allowed transition flex items-center gap-1 shadow-lg shadow-indigo-600/20">
+                            Próximo <span>→</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Corpo do Passo -->
+                <div class="p-5 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- Coluna Esquerda: Explicação + Simulação Visual -->
+                    <div class="lg:col-span-7 space-y-5">
+                        <div id="step-explanation" class="text-slate-300 text-sm sm:text-base leading-relaxed space-y-3">
+                            <!-- Texto didático -->
+                        </div>
+
+                        <!-- Caixa Interativa Específica do Passo (mostra hash real, arquivo de metadados, validação, etc.) -->
+                        <div id="step-interactive-box" class="bg-slate-950 border border-slate-800 rounded-xl p-4 space-y-3">
+                            <!-- Conteúdo dinâmico -->
+                        </div>
+                    </div>
+
+                    <!-- Coluna Direita: Terminal OpenSSL + Explicação das Flags -->
+                    <div class="lg:col-span-5 flex flex-col justify-between space-y-4">
+                        <div class="bg-slate-950 border border-slate-800 rounded-xl overflow-hidden flex flex-col h-full">
+                            <div class="bg-slate-900 px-4 py-2.5 border-b border-slate-800 flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+                                    <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                                    <span class="text-xs font-mono text-slate-400 ml-1">cloudshell:~$ OpenSSL</span>
+                                </div>
+                                <button id="btn-copy-cmd" onclick="copyCurrentCommand()" class="text-xs px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-indigo-600 text-slate-300 hover:text-white transition font-medium flex items-center gap-1.5">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                                    Copiar
+                                </button>
+                            </div>
+                            <div class="p-4 flex-1 flex flex-col justify-between space-y-4">
+                                <pre id="step-command" class="text-xs sm:text-sm font-mono text-cyan-300 whitespace-pre-wrap break-all leading-relaxed"></pre>
+                                <div id="step-cmd-notes" class="border-t border-slate-800 pt-3 text-xs text-slate-400 space-y-1.5">
+                                    <!-- Notas sobre os parâmetros do comando -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO 3: GUIA CLOUD SHELL & CHECKLIST DO ALUNO -->
+        <section id="checklist" class="scroll-mt-24 grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <!-- Checklist Interativo -->
+            <div class="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-2xl p-5 sm:p-6 space-y-4">
+                <div class="flex items-center justify-between gap-2">
+                    <div>
+                        <h3 class="text-lg sm:text-xl font-bold text-white">3. Checklist do Aluno</h3>
+                        <p class="text-xs sm:text-sm text-slate-400">Marque conforme for concluindo no Google Cloud Shell.</p>
+                    </div>
+                    <span id="checklist-progress-text" class="text-sm font-mono font-bold text-emerald-400">0%</span>
+                </div>
+                <!-- Barra de progresso -->
+                <div class="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden">
+                    <div id="checklist-progress-bar" class="h-full bg-gradient-to-r from-indigo-500 to-emerald-400 transition-all duration-300" style="width: 0%"></div>
+                </div>
+
+                <div id="checklist-items" class="space-y-2.5 pt-1">
+                    <!-- Itens gerados via JS -->
+                </div>
+            </div>
+
+            <!-- Dicas Rápidas de Cloud Shell e Entrega -->
+            <div class="lg:col-span-5 bg-slate-900 border border-slate-800 rounded-2xl p-5 sm:p-6 space-y-5 flex flex-col justify-between">
+                <div class="space-y-4">
+                    <h3 class="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+                        <span>☁️</span> Dicas do Google Cloud Shell
+                    </h3>
+                    <div class="space-y-3 text-sm text-slate-300">
+                        <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
+                            <p class="font-semibold text-white">1. Login Institucional (G Suite)</p>
+                            <p class="text-xs text-slate-400">Acesse <span class="font-mono text-cyan-300">console.cloud.google.com</span> com sua conta da escola/universidade e clique no ícone <span class="font-mono bg-slate-800 px-1.5 py-0.5 rounded text-white">&gt;_</span> no canto superior direito.</p>
+                        </div>
+                        <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
+                            <p class="font-semibold text-white">2. Upload e Download de Arquivos</p>
+                            <p class="text-xs text-slate-400">Clique nos três pontinhos (<span class="font-bold text-white">⋮</span>) no canto superior direito do terminal para enviar arquivos para a VM ou baixar os arquivos <span class="font-mono text-amber-300">.enc</span> e o <span class="font-mono text-emerald-300">history</span>.</p>
+                        </div>
+                        <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
+                            <p class="font-semibold text-white">3. Atenção ao <span class="font-mono text-emerald-300">history</span> e Segurança</p>
+                            <p class="text-xs text-slate-400">A sessão expira após ~20 min ociosa. Ao terminar, rode <span class="font-mono text-cyan-300">history &gt; history_seu_nome.txt</span> imediatamente. Evite usar <span class="font-mono text-rose-300">-k</span> em ambientes reais para não expor senhas no histórico.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-3.5 rounded-xl bg-indigo-950/50 border border-indigo-500/30 text-xs text-indigo-200">
+                    <strong>Entrega final no Classroom:</strong> baixe o arquivo <span class="font-mono">history_seu_nome.txt</span> da VM e anexe-o diretamente na atividade do Google Classroom.
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="border-t border-slate-800 mt-12 py-6 text-center text-xs text-slate-500">
+        Material didático interativo — Laboratório de Criptografia Híbrida (RSA + AES + SHA-256)
+    </footer>
+
+    <!-- Campo oculto auxiliar para cópia compatível com iFrames -->
+    <textarea id="clipboard-helper" class="fixed -top-96 left-0 opacity-0 pointer-events-none" aria-hidden="true"></textarea>
+
+    <script>
+        // =========================================================================
+        // ESTADO GLOBAL DA APLICAÇÃO
+        // =========================================================================
+        let currentStep = 0;
+        let currentHashHex = 'calculando...';
+        let simulateCorruption = false; // Flag para demonstrar falha de integridade no Passo 9
+
+        // Lista de itens do Checklist do Aluno
+        const checklistData = [
+            "Acessei o Google Cloud Console (G Suite) e abri o Cloud Shell",
+            "Gerei meu par de chaves RSA (2048 bits) e mantive a privada em sigilo",
+            "Enviei minha Chave Pública (.pem) para a pasta do Drive",
+            "Escolhi o arquivo base e calculei o Hash SHA-256",
+            "Cifrei o arquivo base com AES-256-CBC (-pbkdf2)",
+            "Criei chaves_e_integridade.txt e cifrei com a Chave Pública do colega",
+            "Enviei os dois arquivos .enc para a pasta de compartilhamento do Drive",
+            "Baixei os arquivos do colega e decifrei os metadados com minha Chave Privada",
+            "Decifrei o arquivo base do colega com AES e validei o Hash SHA-256",
+            "Exporte o histórico (history > history_seu_nome.txt) e entreguei no Classroom"
+        ];
+
+        // =========================================================================
+        // FUNÇÃO REAL DE HASH SHA-256 (Web Crypto API + Fallback puro)
+        // =========================================================================
+        async function computeSHA256(message) {
+            try {
+                if (window.crypto && window.crypto.subtle) {
+                    const msgBuffer = new TextEncoder().encode(message);
+                    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+                    const hashArray = Array.from(new Uint8Array(hashBuffer));
+                    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+                }
+            } catch (e) {
+                console.warn('Web Crypto indisponível, usando fallback determinístico:', e);
+            }
+            // Fallback simples caso aberto em contexto não-seguro (file:// antigo)
+            let h1 = 0xdeadbeef ^ message.length, h2 = 0x41c6ce57 ^ message.length;
+            for (let i = 0; i < message.length; i++) {
+                const ch = message.charCodeAt(i);
+                h1 = Math.imul(h1 ^ ch, 2654435761);
+                h2 = Math.imul(h2 ^ ch, 1597334677);
+            }
+            const part = (n) => (n >>> 0).toString(16).padStart(8, '0');
+            return (part(h1) + part(h2) + part(h1 ^ h2) + part(h1 + h2)).repeat(2);
+        }
+
+        // Gera um texto cifrado visual (simulação realista de Base64/binário ilegível)
+        function mockCiphertext(seedStr, length = 64) {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+            let out = 'U2FsdGVkX1'; // Prefixo clássico "Salted__" do OpenSSL em Base64
+            let acc = 17;
+            for (let i = 0; i < length; i++) {
+                acc = (acc * 31 + seedStr.charCodeAt(i % seedStr.length) + i * 7) % 100000;
+                out += chars[acc % chars.length];
+            }
+            return out + '==';
+        }
+
+        // =========================================================================
+        // DEFINIÇÃO DOS 10 PASSOS DO LABORATÓRIO
+        // =========================================================================
+        function getSteps() {
+            const filename = document.getElementById('sim-filename').value.trim() || 'relatorio_lab.txt';
+            const content = document.getElementById('sim-content').value || 'Conteúdo secreto';
+            const password = document.getElementById('sim-password').value || 'SenhaForte123';
+            const fakeEncFile = mockCiphertext(content + password, 54);
+            const fakeEncMeta = mockCiphertext(password + currentHashHex, 58);
+
+            // Hash alterado caso o aluno clique no botão de simular adulteração
+            const tamperedHash = currentHashHex.slice(0, 60) + (currentHashHex.endsWith('0000') ? 'ffff' : '0000');
+
+            return [
+                {
+                    shortLabel: "0. Ambiente",
+                    phase: "PREPARAÇÃO • AMBIENTE",
+                    title: "Acesso ao Google Cloud Shell e OpenSSL",
+                    activeNodes: ["alice", "bob"],
+                    files: {
+                        alice: ["📁 ~/lab-cripto/ (vazia)"],
+                        drive: ["📂 Chaves Públicas (vazia)", "📂 Arquivos Cifrados (vazia)"],
+                        bob: ["📁 ~/lab-cripto/ (vazia)"]
+                    },
+                    explanation: `
+                        <p>Antes de iniciar, ambos os integrantes da dupla acessam o <strong>Google Cloud Console</strong> usando a conta institucional (G Suite) e ativam o <strong>Cloud Shell</strong>.</p>
+                        <p>O Cloud Shell já fornece uma máquina virtual Linux com a biblioteca <strong>OpenSSL</strong> pré-instalada. Criar uma pasta dedicada mantém todos os arquivos organizados para o upload e download.</p>
+                    `,
+                    interactiveHTML: `
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="text-slate-400 font-semibold">Fluxo Cruzado da Dupla:</span>
+                            <span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-mono">Alice ⇄ Bob</span>
+                        </div>
+                        <p class="text-xs text-slate-300">Nesta simulação, acompanharemos o envio de <strong>Alice (Remetente)</strong> para <strong>Bob (Destinatário)</strong>. Na aula, você fará os dois papéis simultaneamente com sua dupla!</p>
+                    `,
+                    command: `mkdir lab-cripto && cd lab-cripto\nopenssl version`,
+                    notes: [
+                        "<strong>mkdir && cd:</strong> cria e entra na pasta do laboratório.",
+                        "<strong>openssl version:</strong> confirma que o OpenSSL está pronto (ex: OpenSSL 3.x)."
+                    ]
+                },
+                {
+                    shortLabel: "1. Chaves RSA",
+                    phase: "PARTE I • PASSO 1 (ASSIMÉTRICA)",
+                    title: "Geração do Par de Chaves RSA (2048 bits)",
+                    activeNodes: ["alice", "bob"],
+                    files: {
+                        alice: ["🔒 chave_privada_Alice.pem (SIGILO)", "🔓 chave_publica_Alice.pem"],
+                        drive: ["📂 Chaves Públicas (aguardando)"],
+                        bob: ["🔒 chave_privada_Bob.pem (SIGILO)", "🔓 chave_publica_Bob.pem"]
+                    },
+                    explanation: `
+                        <p>Cada aluno gera seu próprio par de chaves matematicamente ligadas usando <strong>RSA-2048</strong>:</p>
+                        <ul class="list-disc pl-5 space-y-1 text-slate-300">
+                            <li><strong>Chave Privada:</strong> funciona como a chave única do seu cofre. <em>Nunca sai da sua VM!</em></li>
+                            <li><strong>Chave Pública:</strong> funciona como um cadeado aberto que qualquer pessoa pode usar para trancar algo para você.</li>
+                        </ul>
+                    `,
+                    interactiveHTML: `
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono">
+                            <div class="p-3 rounded-lg bg-rose-950/40 border border-rose-500/30">
+                                <div class="text-rose-300 font-bold mb-1">🔒 chave_privada_Bob.pem</div>
+                                <div class="text-slate-400 truncate">-----BEGIN PRIVATE KEY-----</div>
+                                <div class="text-rose-200/80 text-[11px] mt-1">Fica apenas na VM do Bob!</div>
+                            </div>
+                            <div class="p-3 rounded-lg bg-emerald-950/40 border border-emerald-500/30">
+                                <div class="text-emerald-300 font-bold mb-1">🔓 chave_publica_Bob.pem</div>
+                                <div class="text-slate-400 truncate">-----BEGIN PUBLIC KEY-----</div>
+                                <div class="text-emerald-200/80 text-[11px] mt-1">Pode ser publicada no Drive!</div>
+                            </div>
+                        </div>
+                    `,
+                    command: `# 1. Gera a Chave Privada RSA de 2048 bits\nopenssl genpkey -algorithm RSA -out chave_privada.pem -pkeyopt rsa_keygen_bits:2048\n\n# 2. Extrai a Chave Pública a partir da Privada\nopenssl rsa -pubout -in chave_privada.pem -out chave_publica_SeuNome.pem`,
+                    notes: [
+                        "<strong>genpkey -algorithm RSA:</strong> padrão moderno do OpenSSL para gerar chaves.",
+                        "<strong>-pubout:</strong> extrai apenas a parte pública segura para compartilhamento."
+                    ]
+                },
+                {
+                    shortLabel: "2. Publicar Chave",
+                    phase: "PARTE I • PASSO 2 (COMPARTILHAMENTO)",
+                    title: "Publicação da Chave Pública no Google Drive",
+                    activeNodes: ["drive", "bob"],
+                    files: {
+                        alice: ["🔒 chave_privada_Alice.pem", "🔓 chave_publica_Alice.pem"],
+                        drive: ["🔓 chave_publica_Bob.pem", "🔓 chave_publica_Alice.pem"],
+                        bob: ["🔒 chave_privada_Bob.pem", "🔓 chave_publica_Bob.pem"]
+                    },
+                    explanation: `
+                        <p>Bob baixa sua <strong>Chave Pública</strong> da VM (via menu <span class="font-mono text-white">⋮ > Fazer download</span>) e envia para a pasta compartilhada <em>"Drive - Chaves Públicas"</em>.</p>
+                        <p><strong>Por que isso é seguro?</strong> Mesmo que toda a turma veja a chave pública de Bob, ela serve <em>apenas para cifrar</em>. Ninguém consegue decifrar nada sem a chave privada que ficou na VM dele.</p>
+                    `,
+                    interactiveHTML: `
+                        <div class="flex items-center gap-3 text-xs text-amber-200 bg-amber-950/30 border border-amber-500/20 p-3 rounded-lg">
+                            <span class="text-lg">💡</span>
+                            <span><strong>Padrão de nome obrigatório:</strong> nomeie como <code class="bg-slate-900 px-1.5 py-0.5 rounded text-white">chave_publica_SeuNome.pem</code> para que sua dupla identifique facilmente no Drive.</span>
+                        </div>
+                    `,
+                    command: `# Verifique se o arquivo público existe na pasta\nls -la chave_publica_*.pem\n\n# Depois use o menu (⋮) do Cloud Shell -> Fazer download\n# e envie para a pasta "Drive - Chaves Públicas"`,
+                    notes: [
+                        "Nunca faça upload da <code>chave_privada.pem</code>!",
+                        "Na dúvida, abra o arquivo com <code>head -n 1</code>: deve começar com <code>BEGIN PUBLIC KEY</code>."
+                    ]
+                },
+                {
+                    shortLabel: "3. Hash SHA-256",
+                    phase: "PARTE I • PASSO 3 (INTEGRIDADE)",
+                    title: "Seleção do Arquivo Base e Cálculo do Hash (SHA-256)",
+                    activeNodes: ["alice"],
+                    files: {
+                        alice: ["📄 " + filename, "🧬 Digest SHA-256 anotado", "🔒 chave_privada_Alice.pem"],
+                        drive: ["🔓 chave_publica_Bob.pem"],
+                        bob: ["🔒 chave_privada_Bob.pem"]
+                    },
+                    explanation: `
+                        <p>Alice escolhe o arquivo que deseja enviar (ex: <code class="text-cyan-300">${filename}</code>) e calcula sua <strong>impressão digital criptográfica (Hash SHA-256)</strong>.</p>
+                        <p>Se <em>um único bit</em> ou letra do arquivo mudar no caminho, o hash SHA-256 muda completamente (Efeito Avalanche). Teste editar o campo "Conteúdo do Arquivo" lá em cima e veja o hash abaixo mudar instantaneamente!</p>
+                    `,
+                    interactiveHTML: `
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="text-slate-400">Arquivo: <strong class="text-white font-mono">${filename}</strong></span>
+                                <span class="text-emerald-400 font-semibold">SHA-256 Real (64 hex chars)</span>
+                            </div>
+                            <div class="p-3 rounded-lg bg-slate-900 border border-emerald-500/30 font-mono text-xs text-emerald-300 break-all select-all">
+                                ${currentHashHex}
+                            </div>
+                        </div>
+                    `,
+                    command: `# Calcula o hash SHA-256 do arquivo escolhido\nopenssl dgst -sha256 ${filename}`,
+                    notes: [
+                        "<strong>dgst -sha256:</strong> gera o resumo (digest) de 256 bits em hexadecimal.",
+                        "Guarde esse valor: ele irá dentro do arquivo de metadados no Passo 5."
+                    ]
+                },
+                {
+                    shortLabel: "4. Cifrar AES",
+                    phase: "PARTE I • PASSO 4 (CIFRAGEM SIMÉTRICA)",
+                    title: "Cifragem do Arquivo Base com AES-256-CBC",
+                    activeNodes: ["alice"],
+                    files: {
+                        alice: ["📄 " + filename, "📦 arquivo_Alice_para_Bob.enc (CIFRADO)", "🔑 Senha AES em memória"],
+                        drive: ["🔓 chave_publica_Bob.pem"],
+                        bob: ["🔒 chave_privada_Bob.pem"]
+                    },
+                    explanation: `
+                        <p>Agora Alice cria uma senha forte e usa o algoritmo simétrico <strong>AES-256-CBC</strong> com derivação de chave <strong>PBKDF2</strong> para trancar o arquivo original.</p>
+                        <p>O resultado é o arquivo <code class="text-amber-300">arquivo_Alice_para_Bob.enc</code>: um bloco binário totalmente ilegível sem a senha.</p>
+                    `,
+                    interactiveHTML: `
+                        <div class="space-y-2 text-xs">
+                            <div class="flex items-center justify-between">
+                                <span class="text-slate-400">Senha usada: <code class="text-amber-300 font-mono">${password}</code></span>
+                                <span class="px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 font-mono">AES-256-CBC</span>
+                            </div>
+                            <div class="p-3 rounded-lg bg-slate-900 border border-slate-700 font-mono text-slate-400 break-all">
+                                <span class="text-slate-500 block text-[10px] mb-1">Prévia visual do arquivo cifrado (ilegível):</span>
+                                ${fakeEncFile}
+                            </div>
+                        </div>
+                    `,
+                    command: `openssl enc -aes-256-cbc -pbkdf2 -salt -in ${filename} -out arquivo_Alice_para_Bob.enc`,
+                    notes: [
+                        "<strong>-aes-256-cbc -pbkdf2:</strong> modo seguro recomendado pelo OpenSSL moderno.",
+                        "O terminal pedirá a senha interativamente (ela não aparece enquanto você digita)."
+                    ]
+                },
+                {
+                    shortLabel: "5. Envelope RSA",
+                    phase: "PARTE I • PASSO 5 (CHAVE HÍBRIDA)",
+                    title: "Criação e Cifragem dos Metadados com RSA",
+                    activeNodes: ["alice"],
+                    files: {
+                        alice: ["🔓 chave_publica_Bob.pem (baixada)", "📝 chaves_e_integridade.txt", "🔐 chaves_Alice_para_Bob.enc (RSA)", "📦 arquivo_Alice_para_Bob.enc"],
+                        drive: ["🔓 chave_publica_Bob.pem"],
+                        bob: ["🔒 chave_privada_Bob.pem"]
+                    },
+                    explanation: `
+                        <p>Este é o coração da <strong>criptografia híbrida</strong>! Alice baixa a <em>Chave Pública do Bob</em> do Drive, cria um arquivo de texto pequeno com os metadados (nome original, senha do AES e hash SHA-256) e cifra esse texto usando <strong>RSA com a chave pública do Bob</strong>.</p>
+                        <p>Como esse arquivo tem menos de 150 bytes, o RSA consegue cifrá-lo perfeitamente!</p>
+                    `,
+                    interactiveHTML: `
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono">
+                            <div class="p-3 rounded-lg bg-slate-900 border border-slate-700 space-y-1">
+                                <div class="text-slate-400 font-sans font-semibold mb-1">1. Texto claro (chaves_e_integridade.txt):</div>
+                                <div class="text-white">Arquivo-Original: <span class="text-cyan-300">${filename}</span></div>
+                                <div class="text-white">Senha-AES: <span class="text-amber-300">${password}</span></div>
+                                <div class="text-white break-all">Digest-Hash: <span class="text-emerald-300">${currentHashHex.slice(0, 22)}...</span></div>
+                            </div>
+                            <div class="p-3 rounded-lg bg-indigo-950/40 border border-indigo-500/30 space-y-1">
+                                <div class="text-indigo-300 font-sans font-semibold mb-1">2. Cifrado com RSA (chave pública do Bob):</div>
+                                <div class="text-slate-400 break-all">${fakeEncMeta}</div>
+                                <div class="text-[10px] text-indigo-300 font-sans pt-1">🔒 Só a chave privada do Bob abre isto!</div>
+                            </div>
+                        </div>
+                    `,
+                    command: `# Crie o arquivo chaves_e_integridade.txt (usando nano ou cat)\n# Em seguida, cifre-o com a Chave Pública do seu colega:\nopenssl pkeyutl -encrypt -pubin -inkey chave_publica_Bob.pem -in chaves_e_integridade.txt -out chaves_Alice_para_Bob.enc`,
+                    notes: [
+                        "<strong>pkeyutl -encrypt -pubin:</strong> cifra o arquivo usando uma chave pública RSA.",
+                        "Atenção: use a chave pública do <strong>destinatário (colega)</strong>, não a sua!"
+                    ]
+                },
+                {
+                    shortLabel: "6. Envio ao Drive",
+                    phase: "PARTE I • PASSO 6 (TRANSPORTE PÚBLICO)",
+                    title: "Envio dos Dois Arquivos Cifrados ao Drive",
+                    activeNodes: ["alice", "drive"],
+                    files: {
+                        alice: ["✅ Envio concluído"],
+                        drive: ["📦 arquivo_Alice_para_Bob.enc", "🔐 chaves_Alice_para_Bob.enc", "🔓 chave_publica_Bob.pem"],
+                        bob: ["🔒 chave_privada_Bob.pem"]
+                    },
+                    explanation: `
+                        <p>Alice faz o download dos dois arquivos <code>.enc</code> da sua VM e os envia para a pasta pública <em>"Drive - Compartilhamento de Arquivos"</em>.</p>
+                        <p><strong>E se um invasor interceptar tudo no Drive?</strong> Ele verá o arquivo cifrado em AES, o arquivo de chaves cifrado em RSA e as chaves públicas. Sem a <em>Chave Privada do Bob</em>, ele não consegue descobrir a senha do AES nem abrir o arquivo.</p>
+                    `,
+                    interactiveHTML: `
+                        <div class="p-3 rounded-lg bg-slate-900 border border-amber-500/30 text-xs space-y-2">
+                            <div class="font-bold text-amber-300 flex items-center gap-2">
+                                <span>🕵️</span> Visão de um Invasor olhando a pasta do Drive:
+                            </div>
+                            <p class="text-slate-300">• <code class="text-slate-400">arquivo_Alice_para_Bob.enc</code> → Bloqueado por AES-256 (precisa da senha).</p>
+                            <p class="text-slate-300">• <code class="text-slate-400">chaves_Alice_para_Bob.enc</code> → Bloqueado por RSA-2048 (precisa da chave privada do Bob).</p>
+                            <p class="text-emerald-400 font-semibold pt-1">Resultado: Dados 100% protegidos mesmo em canal público!</p>
+                        </div>
+                    `,
+                    command: `# Verifique os dois arquivos gerados antes de baixar da VM:\nls -lh *_Alice_para_Bob.enc\n\n# Menu (⋮) -> Fazer download de ambos os arquivos\n# e enviar para "Drive - Compartilhamento de Arquivos"`,
+                    notes: [
+                        "<strong>Dica:</strong> nunca envie o arquivo original nem o <code>chaves_e_integridade.txt</code> em texto claro para o Drive!"
+                    ]
+                },
+                {
+                    shortLabel: "7. Decifrar RSA",
+                    phase: "PARTE II • PASSO 1 (DESTINATÁRIO)",
+                    title: "Bob Decifra os Metadados com sua Chave Privada",
+                    activeNodes: ["drive", "bob"],
+                    files: {
+                        alice: ["✅ Aguardando confirmação"],
+                        drive: ["📦 arquivo_Alice_para_Bob.enc", "🔐 chaves_Alice_para_Bob.enc"],
+                        bob: ["🔒 chave_privada_Bob.pem", "🔐 chaves_Alice_para_Bob.enc", "🔓 metadados_recuperados.txt"]
+                    },
+                    explanation: `
+                        <p>Agora o papel inverte! Bob baixa os dois arquivos <code>.enc</code> enviados por Alice e faz upload deles na sua VM do Cloud Shell.</p>
+                        <p>Usando a <strong>sua própria Chave Privada RSA</strong>, Bob consegue abrir o envelope digital e revelar o nome original do arquivo, a senha do AES e o hash esperado.</p>
+                    `,
+                    interactiveHTML: `
+                        <div class="p-3 rounded-lg bg-emerald-950/30 border border-emerald-500/30 text-xs font-mono space-y-1">
+                            <div class="text-emerald-300 font-sans font-bold mb-1">🔓 Conteúdo revelado para Bob:</div>
+                            <div class="text-white">Arquivo-Original: <span class="text-cyan-300">${filename}</span></div>
+                            <div class="text-white">Senha-AES: <span class="text-amber-300">${password}</span></div>
+                            <div class="text-white break-all">Digest-Hash: <span class="text-emerald-300">${currentHashHex}</span></div>
+                        </div>
+                    `,
+                    command: `# Decifra o arquivo de chaves usando a SUA Chave Privada\nopenssl pkeyutl -decrypt -inkey chave_privada.pem -in chaves_Alice_para_Bob.enc -out metadados_recuperados.txt\n\n# Exibe o conteúdo decifrado no terminal\ncat metadados_recuperados.txt`,
+                    notes: [
+                        "<strong>pkeyutl -decrypt:</strong> operação inversa usando a chave privada.",
+                        "Se der erro de padding/chave, verifique se Alice usou a sua chave pública correta."
+                    ]
+                },
+                {
+                    shortLabel: "8. Decifrar AES",
+                    phase: "PARTE II • PASSO 2 (DESTINATÁRIO)",
+                    title: "Bob Decifra o Arquivo Base com AES-256-CBC",
+                    activeNodes: ["bob"],
+                    files: {
+                        alice: ["✅ Aguardando confirmação"],
+                        drive: ["📦 arquivo_Alice_para_Bob.enc"],
+                        bob: ["🔑 Senha AES obtida", "📄 " + filename + " (RESTAURADO!)"]
+                    },
+                    explanation: `
+                        <p>De posse da <strong>Senha AES</strong> e do <strong>nome/extensão original</strong> obtidos no passo anterior, Bob executa o comando de decifragem simétrica com exatamente os mesmos parâmetros (<code class="text-cyan-300">-aes-256-cbc -pbkdf2</code>).</p>
+                        <p>O arquivo original é completamente restaurado na VM do Bob!</p>
+                    `,
+                    interactiveHTML: `
+                        <div class="p-3 rounded-lg bg-slate-900 border border-cyan-500/30 text-xs space-y-1.5">
+                            <div class="flex items-center justify-between">
+                                <span class="text-cyan-300 font-bold">📄 Arquivo Restaurado: ${filename}</span>
+                                <span class="text-slate-400 font-mono">Flag -d (decrypt)</span>
+                            </div>
+                            <div class="p-2.5 rounded bg-slate-950 text-white font-mono">
+                                "${content}"
+                            </div>
+                        </div>
+                    `,
+                    command: `# Decifra o arquivo base usando a senha revelada no passo anterior\nopenssl enc -d -aes-256-cbc -pbkdf2 -in arquivo_Alice_para_Bob.enc -out ${filename}`,
+                    notes: [
+                        "<strong>-d:</strong> indica modo de decifragem (decrypt).",
+                        "É obrigatório usar <code>-pbkdf2</code> se ele foi usado na cifragem."
+                    ]
+                },
+                {
+                    shortLabel: "9. Validar Hash",
+                    phase: "PARTE II • PASSO 3 (VALIDAÇÃO FINAL)",
+                    title: "Verificação de Integridade (Comparação de Hashes)",
+                    activeNodes: ["bob"],
+                    files: {
+                        alice: ["✅ Missão cumprida"],
+                        drive: ["📦 Arquivos em trânsito"],
+                        bob: ["📄 " + filename, simulateCorruption ? "❌ Hash Divergente!" : "✅ Integridade Validada!"]
+                    },
+                    explanation: `
+                        <p>Mesmo após abrir o arquivo, como Bob tem certeza de que o arquivo não foi corrompido no download ou adulterado? Ele recalcula o <strong>SHA-256</strong> do arquivo restaurado e compara com o <code>Digest-Hash</code> enviado por Alice.</p>
+                        <p>Use o botão abaixo para testar o que acontece quando o arquivo está íntegro vs. quando sofre uma alteração mínima:</p>
+                    `,
+                    interactiveHTML: `
+                        <div class="space-y-3 text-xs">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <span class="font-semibold text-slate-300">Teste de Integridade:</span>
+                                <button onclick="toggleCorruption()" class="px-3 py-1.5 rounded-lg font-semibold transition ${simulateCorruption ? 'bg-emerald-600 hover:bg-emerald-500 text-white' : 'bg-rose-600/20 hover:bg-rose-600 text-rose-300 hover:text-white border border-rose-500/40'}">
+                                    ${simulateCorruption ? 'Restaurar Arquivo Íntegro' : '⚡ Simular Arquivo Corrompido'}
+                                </button>
+                            </div>
+                            <div class="space-y-2 font-mono">
+                                <div class="p-2.5 rounded-lg bg-slate-900 border border-slate-700">
+                                    <span class="text-slate-400 block text-[10px] font-sans">Hash Esperado (dos metadados de Alice):</span>
+                                    <span class="text-cyan-300 break-all">${currentHashHex}</span>
+                                </div>
+                                <div class="p-2.5 rounded-lg bg-slate-900 border ${simulateCorruption ? 'border-rose-500/60' : 'border-emerald-500/60'}">
+                                    <span class="text-slate-400 block text-[10px] font-sans">Hash Calculado por Bob agora:</span>
+                                    <span class="${simulateCorruption ? 'text-rose-400' : 'text-emerald-300'} break-all">${simulateCorruption ? tamperedHash : currentHashHex}</span>
+                                </div>
+                            </div>
+                            <div class="p-3 rounded-lg font-medium flex items-center gap-2 ${simulateCorruption ? 'bg-rose-950/60 border border-rose-500/40 text-rose-200' : 'bg-emerald-950/60 border border-emerald-500/40 text-emerald-200'}">
+                                <span class="text-base">${simulateCorruption ? '❌' : '✅'}</span>
+                                <span>${simulateCorruption ? 'ALERTA: Os hashes são diferentes! O arquivo foi corrompido ou adulterado.' : 'VALIDADO: Os hashes são 100% idênticos! Confidencialidade e integridade garantidas.'}</span>
+                            </div>
+                        </div>
+                    `,
+                    command: `# 1. Recalcula o hash do arquivo decifrado\nopenssl dgst -sha256 ${filename}\n\n# 2. Ao finalizar tudo, exporte o histórico para entrega no Classroom:\nhistory > history_seu_nome.txt`,
+                    notes: [
+                        "Compare visualmente (ou via <code>diff</code>) o hash gerado com o do arquivo de metadados.",
+                        "Baixe <code>history_seu_nome.txt</code> da VM e anexe na atividade do Classroom!"
+                    ]
+                }
+            ];
+        }
+
+        // =========================================================================
+        // RENDERIZAÇÃO DA INTERFACE
+        // =========================================================================
+        function renderStep() {
+            const steps = getSteps();
+            const step = steps[currentStep];
+
+            // Atualiza contador e botões de navegação
+            document.getElementById('step-counter-badge').textContent = `${currentStep + 1} / ${steps.length}`;
+            document.getElementById('btn-prev').disabled = currentStep === 0;
+            document.getElementById('btn-next').disabled = currentStep === steps.length - 1;
+
+            // Atualiza textos principais
+            document.getElementById('step-phase').textContent = step.phase;
+            document.getElementById('step-title').textContent = step.title;
+            document.getElementById('step-explanation').innerHTML = step.explanation;
+            document.getElementById('step-interactive-box').innerHTML = step.interactiveHTML;
+            document.getElementById('step-command').textContent = step.command;
+            document.getElementById('step-cmd-notes').innerHTML = step.notes.map(n => `<p>• ${n}</p>`).join('');
+
+            // Atualiza os 3 nós da topologia (Alice, Drive, Bob)
+            ['alice', 'drive', 'bob'].forEach(nodeKey => {
+                const card = document.getElementById(`node-${nodeKey}`);
+                const badge = document.getElementById(`badge-${nodeKey}`);
+                const filesContainer = document.getElementById(`files-${nodeKey}`);
+                const isActive = step.activeNodes.includes(nodeKey);
+
+                card.classList.remove('border-indigo-500', 'border-amber-500', 'border-emerald-500', 'border-slate-800', 'active-node');
+                if (isActive) {
+                    const colorClass = nodeKey === 'alice' ? 'border-indigo-500' : nodeKey === 'drive' ? 'border-amber-500' : 'border-emerald-500';
+                    card.classList.add(colorClass, 'active-node');
+                    badge.classList.remove('hidden');
+                } else {
+                    card.classList.add('border-slate-800');
+                    badge.classList.add('hidden');
+                }
+
+                filesContainer.innerHTML = step.files[nodeKey].map(f => `
+                    <div class="px-2.5 py-1.5 rounded-lg bg-slate-950/90 border border-slate-800 text-slate-300 truncate" title="${f}">
+                        ${f}
+                    </div>
+                `).join('');
+            });
+
+            // Renderiza os botões de passo (pills)
+            const pillsContainer = document.getElementById('step-pills');
+            pillsContainer.innerHTML = steps.map((s, idx) => {
+                const active = idx === currentStep;
+                const completed = idx < currentStep;
+                return `
+                    <button onclick="goToStep(${idx})" class="shrink-0 px-3 py-1.5 rounded-xl text-xs font-semibold transition border ${
+                        active
+                            ? 'bg-indigo-600 text-white border-indigo-400 shadow-md shadow-indigo-600/30'
+                            : completed
+                                ? 'bg-slate-800 text-emerald-300 border-emerald-500/30 hover:bg-slate-700'
+                                : 'bg-slate-900 text-slate-400 border-slate-800 hover:text-white hover:bg-slate-800'
+                    }">
+                        ${s.shortLabel}
+                    </button>
+                `;
+            }).join('');
+        }
+
+        // Navegação entre passos
+        function changeStep(delta) {
+            const total = getSteps().length;
+            const next = currentStep + delta;
+            if (next >= 0 && next < total) {
+                currentStep = next;
+                renderStep();
+            }
+        }
+
+        function goToStep(index) {
+            currentStep = index;
+            renderStep();
+        }
+
+        // Alterna simulação de arquivo corrompido no último passo
+        function toggleCorruption() {
+            simulateCorruption = !simulateCorruption;
+            renderStep();
+        }
+
+        // Copia o comando OpenSSL atual usando document.execCommand('copy')
+        function copyCurrentCommand() {
+            const cmdText = document.getElementById('step-command').textContent;
+            const helper = document.getElementById('clipboard-helper');
+            helper.value = cmdText;
+            helper.select();
+            try {
+                document.execCommand('copy');
+                showToast('Comando OpenSSL copiado para a área de transferência!');
+            } catch (err) {
+                showToast('Não foi possível copiar automaticamente.');
+            }
+        }
+
+        // Exibe notificação Toast suave
+        let toastTimeout;
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').textContent = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 2600);
+        }
+
+        // =========================================================================
+        // CHECKLIST INTERATIVO DO ALUNO
+        // =========================================================================
+        function initChecklist() {
+            const container = document.getElementById('checklist-items');
+            container.innerHTML = checklistData.map((item, idx) => `
+                <label class="flex items-start gap-3 p-3 rounded-xl bg-slate-950/70 border border-slate-800 hover:border-slate-700 cursor-pointer transition select-none">
+                    <input type="checkbox" onchange="updateChecklistProgress()" class="checklist-box mt-0.5 w-4 h-4 rounded accent-indigo-500 cursor-pointer shrink-0">
+                    <span class="text-xs sm:text-sm text-slate-300 leading-snug">${idx + 1}. ${item}</span>
+                </label>
+            `).join('');
+        }
+
+        function updateChecklistProgress() {
+            const boxes = document.querySelectorAll('.checklist-box');
+            const checked = Array.from(boxes).filter(b => b.checked).length;
+            const pct = Math.round((checked / boxes.length) * 100);
+            document.getElementById('checklist-progress-text').textContent = `${pct}% (${checked}/${boxes.length})`;
+            document.getElementById('checklist-progress-bar').style.width = `${pct}%`;
+
+            // Estiliza o texto dos itens marcados
+            boxes.forEach(box => {
+                const span = box.nextElementSibling;
+                if (box.checked) {
+                    span.classList.add('line-through', 'text-slate-500');
+                    span.classList.remove('text-slate-300');
+                } else {
+                    span.classList.remove('line-through', 'text-slate-500');
+                    span.classList.add('text-slate-300');
+                }
+            });
+
+            if (pct === 100) {
+                showToast('Parabéns! Todas as etapas do laboratório foram concluídas!');
+            }
+        }
+
+        // =========================================================================
+        // ATUALIZAÇÃO REATIVA DOS INPUTS DO SIMULADOR
+        // =========================================================================
+        async function refreshSimulationData() {
+            const content = document.getElementById('sim-content').value || '';
+            currentHashHex = await computeSHA256(content);
+            renderStep();
+        }
+
+        // Inicialização ao carregar a página
+        window.addEventListener('DOMContentLoaded', () => {
+            initChecklist();
+            refreshSimulationData();
+
+            ['sim-filename', 'sim-content', 'sim-password'].forEach(id => {
+                document.getElementById(id).addEventListener('input', refreshSimulationData);
+            });
+        });
+    </script>
+</body>
+</html>
